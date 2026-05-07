@@ -570,6 +570,79 @@ body {
   }
 }
 
+/* media doplnene*/
+@media (max-width: 768px) {
+
+  .main-content-wrapper {
+    padding: 0;
+  }
+
+  .book-scene {
+    height: 78vw;
+    min-height: 320px;
+    max-height: 520px;
+
+    transform: rotateX(6deg) scale(0.92);
+
+    margin-bottom: 8px;
+  }
+
+  .book-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .flipping-page .face {
+    inset: 6px 8px 6px 0;
+  }
+
+  .book-page {
+    top: 6px;
+    bottom: 6px;
+  }
+
+  .right-page {
+    right: 8px;
+  }
+
+  .left-page {
+    left: 8px;
+  }
+
+  .cislo-knihy {
+    bottom: 8px;
+    font-size: 0.5rem;
+  }
+
+  .cislo-lave {
+    left: 14px;
+  }
+
+  .cislo-prave {
+    right: 14px;
+  }
+
+  .control-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .controls-inner {
+    gap: 8px;
+  }
+
+  .strana-cely-obrazok-wrap {
+    top: -8px;
+    height: calc(100% + 14px);
+  }
+}
+
+
+
+
+
+
+
 /* CELÁ STRANA AKO OBRÁZOK */
 .strana-cely-obrazok-wrap {
   position: absolute;
