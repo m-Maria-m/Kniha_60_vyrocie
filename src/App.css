@@ -622,8 +622,10 @@ body {
 .strana-cely-obrazok {
   display: block;
 
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: 106%;
+
+  max-width: none;
 
   object-fit: contain;
   object-position: center center;
