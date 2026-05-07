@@ -598,7 +598,7 @@ body {
   right: 25px;
 }
 
-//* CELÁ STRANA AKO OBRÁZOK */
+/* CELÁ STRANA AKO OBRÁZOK */
 .strana-cely-obrazok-wrap {
   position: absolute;
   inset: 0;
@@ -657,6 +657,7 @@ body {
 
 
 
+
 /* MOBIL A TABLET */
 
 @media (max-width: 768px) {
@@ -681,7 +682,6 @@ body {
   width: auto;
   max-width: 98vw;
 }
-
   .book-container.closed {
     transform: translateX(-22%);
   }
