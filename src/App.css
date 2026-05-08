@@ -939,3 +939,219 @@ body {
 
   pointer-events: none;
 }
+
+
+/* ÚVODNÉ STRANY – SPOLOČNÉ NASTAVENIE */
+
+.uvod-lava-strana,
+.uvod-prava-strana {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at 50% 45%, rgba(199, 154, 65, 0.035), transparent 42%),
+    linear-gradient(
+      to bottom,
+      rgba(255, 248, 230, 0.08),
+      rgba(239, 226, 194, 0.04)
+    );
+}
+
+/* DÔLEŽITÉ: pravá úvodná strana nesmie mať padding-top z otočnej strany */
+.flipping-page .face:has(.uvod-prava-strana) {
+  padding-top: 0;
+}
+
+/* rovnaký rámček na ľavej aj pravej strane */
+.uvod-lava-strana::before,
+.uvod-prava-strana::before {
+  content: "";
+  position: absolute;
+  inset: 28px;
+
+  border: 1px solid rgba(122, 75, 18, 0.14);
+  border-radius: 8px;
+
+  pointer-events: none;
+}
+
+/* SPOLOČNÝ VODOZNAK */
+
+.uvod-lava-watermark,
+.uvod-prava-watermark {
+  position: absolute;
+  top: 54%;
+  left: 50%;
+
+  transform: translate(-50%, -50%) rotate(-10deg);
+
+  font-size: clamp(9rem, 18vw, 16rem);
+  font-weight: 700;
+  color: rgba(122, 27, 27, 0.055);
+
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* OBSAH ĽAVEJ A PRAVEJ STRANY */
+
+.uvod-lava-obsah,
+.uvod-prava-obsah {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+/* ĽAVÁ STRANA */
+
+.uvod-lava-logo {
+  width: clamp(105px, 14vw, 175px);
+  height: auto;
+  object-fit: contain;
+
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+
+  filter: grayscale(0.35) sepia(0.55) saturate(0.45) contrast(0.85) brightness(0.95);
+}
+
+.uvod-lava-ciara {
+  width: clamp(70px, 9vw, 120px);
+  height: 1px;
+
+  margin: clamp(22px, 3vw, 38px) 0 clamp(18px, 2.4vw, 30px);
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(122, 75, 18, 0.55),
+    transparent
+  );
+}
+
+.uvod-lava-text {
+  margin: 0;
+
+  font-size: clamp(0.9rem, 1.45vw, 1.35rem);
+  font-style: italic;
+  letter-spacing: 0.14em;
+
+  color: rgba(75, 58, 42, 0.82);
+}
+
+.uvod-lava-motto {
+  margin-top: clamp(18px, 2.4vw, 34px);
+
+  max-width: 70%;
+
+  font-size: clamp(0.62rem, 0.9vw, 0.88rem);
+  line-height: 1.6;
+  font-style: italic;
+
+  color: rgba(75, 58, 42, 0.62);
+}
+
+/* PRAVÁ STRANA */
+
+.uvod-prava-nazov {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(8px, 1vw, 14px);
+
+  margin: 0;
+  line-height: 1;
+}
+
+.uvod-prava-nazov-text {
+  font-size: clamp(1.2rem, 2.2vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #2f2419;
+  line-height: 1;
+}
+
+.uvod-prava-nazov-cislo {
+  font-size: clamp(1.3rem, 2.35vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #2f2419;
+  line-height: 1;
+}
+
+.uvod-prava-podnazov {
+  margin-top: clamp(10px, 1.2vw, 16px);
+
+  font-size: clamp(0.62rem, 1vw, 1rem);
+  letter-spacing: 0.38em;
+  color: #7b6d5a;
+}
+
+.uvod-prava-stred {
+  margin-top: clamp(28px, 4vw, 52px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.4vw, 16px);
+}
+
+.uvod-prava-cislo {
+  font-size: clamp(4.2rem, 8.2vw, 8.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  color: #c79a41;
+}
+
+.uvod-prava-rokov {
+  font-size: clamp(0.95rem, 1.55vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  color: #c79a41;
+}
+
+.uvod-prava-datum {
+  font-size: clamp(0.68rem, 1vw, 1rem);
+  font-style: italic;
+  letter-spacing: 0.22em;
+  color: #7c705f;
+}
+
+.uvod-prava-ciara {
+  width: clamp(70px, 9vw, 120px);
+  height: 1px;
+
+  margin: clamp(18px, 2.4vw, 28px) 0 clamp(12px, 1.6vw, 18px);
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(122, 75, 18, 0.55),
+    transparent
+  );
+}
+
+.uvod-prava-motto {
+  margin-top: clamp(12px, 1.8vw, 24px);
+
+  max-width: 75%;
+
+  font-size: clamp(0.62rem, 0.9vw, 0.88rem);
+  line-height: 1.5;
+  font-style: italic;
+
+  color: rgba(75, 58, 42, 0.68);
+}
