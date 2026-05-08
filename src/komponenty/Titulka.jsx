@@ -24,11 +24,11 @@ export default function Titulka({ jeOtvorena }) {
                 className="uvod-lava-logo"
               />
 
-              <div className="uvod-lava-ciara"></div>
-
               <p className="uvod-lava-text">
                 ~ História a súčasnosť ~
               </p>
+
+              <div className="uvod-lava-ciara"></div>
 
               <p className="uvod-lava-motto">
                 Kronika spomienok, tradície a budúcnosti
