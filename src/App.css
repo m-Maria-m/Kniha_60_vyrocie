@@ -1169,3 +1169,169 @@ body {
   opacity: 0.55;
 }
 
+/* MOBIL – iPhone / telefóny na výšku */
+
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .my-app-wrapper {
+    min-height: 100svh;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .main-content-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100svh;
+    padding: 0;
+    transform: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .book-scene {
+    width: 100vw;
+    height: calc(100vw / 1.42);
+
+    min-height: unset;
+    max-height: unset;
+
+    margin: 0;
+    transform: rotateX(4deg) scale(0.98);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .book-container {
+    width: 98vw;
+    height: auto;
+    aspect-ratio: 1.42 / 1;
+    max-width: 98vw;
+  }
+
+  .book-container.closed {
+    transform: translateX(-22%);
+  }
+
+  .flipping-page .face {
+    inset: 6px 8px 6px 0;
+    padding-top: 36px;
+  }
+
+  .book-page {
+    top: 6px;
+    bottom: 6px;
+  }
+
+  .left-page {
+    left: 8px;
+  }
+
+  .right-page {
+    right: 8px;
+    padding-top: 36px;
+  }
+
+  .cover-front {
+    padding: 10px;
+  }
+
+  .cover-image {
+    width: 88%;
+    max-height: 92%;
+  }
+
+  .controls-wrapper {
+    bottom: 12px;
+  }
+
+  .controls-inner {
+    gap: 3px;
+    padding: 3px 5px;
+    border-radius: 999px;
+    background: rgba(243, 223, 189, 0.55);
+    backdrop-filter: blur(6px);
+  }
+
+  .control-btn {
+    padding: 3px 7px;
+    font-size: 0.56rem;
+    border-radius: 14px;
+    line-height: 1.1;
+  }
+
+  .cislo-knihy {
+    bottom: 6px;
+    font-size: 0.48rem;
+  }
+
+  .cislo-lave {
+    left: 12px;
+  }
+
+  .cislo-prave {
+    right: 12px;
+  }
+
+  .strana-cely-obrazok-wrap {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .strana-cely-obrazok {
+    width: auto;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+  }
+}
+
+/* ZOOM OKNO NA MOBILE */
+
+@media (max-width: 768px) {
+  .zoom-panel {
+    width: 100vw;
+    height: 100svh;
+    border-radius: 0;
+  }
+
+  .zoom-priestor {
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+  }
+
+  .zoom-obrazok {
+    max-width: 96vw;
+    max-height: 82svh;
+  }
+
+  .zoom-btn {
+    font-size: 0.7rem;
+    padding: 5px 9px;
+  }
+
+  .zoom-info {
+    bottom: 10px;
+    max-width: 86vw;
+    font-size: 0.58rem;
+    line-height: 1.3;
+    text-align: center;
+    padding: 5px 10px;
+  }
+}
