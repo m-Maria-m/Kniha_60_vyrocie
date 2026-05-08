@@ -15,7 +15,7 @@ export default function Ovladanie({
     <div className="controls-wrapper visible">
       <div className="controls-inner">
         {!jeOtvorena && (
-          <button onClick={otvorKnihu} className="control-btn gold">
+          <button onClick={otvorKnihu} className="control-btn otvor-knihu-btn">
             Otvoriť knihu
           </button>
         )}

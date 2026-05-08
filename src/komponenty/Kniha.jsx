@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Titulka from "./Titulka";
 import OtocnaStrana from "./OtocnaStrana";
@@ -27,6 +27,12 @@ export default function Kniha() {
   const [listujeSa, setListujeSa] = useState(false);
   const [zobrazTlacidla, setZobrazTlacidla] = useState(false);
 
+  const [zoomKnihy, setZoomKnihy] = useState(1);
+  const [posunKnihy, setPosunKnihy] = useState({ x: 0, y: 0 });
+  const [tahamKnihu, setTahamKnihu] = useState(false);
+
+  const zaciatokTahania = useRef({ x: 0, y: 0 });
+
   useEffect(() => {
     if (!jeOtvorena) return;
 
@@ -44,24 +50,62 @@ export default function Kniha() {
     };
   }, [jeOtvorena]);
 
+  const resetZoomKnihy = () => {
+    setZoomKnihy(1);
+    setPosunKnihy({ x: 0, y: 0 });
+    setTahamKnihu(false);
+  };
+
+  const handleZoomKnihy = (e) => {
+    e.preventDefault();
+
+    setZoomKnihy((povodnyZoom) => {
+      const krok = e.deltaY < 0 ? 0.12 : -0.12;
+      const novyZoom = Math.min(Math.max(povodnyZoom + krok, 1), 2.4);
+
+      if (novyZoom === 1) {
+        setPosunKnihy({ x: 0, y: 0 });
+      }
+
+      return novyZoom;
+    });
+  };
+
+  const zacniTahatKnihu = (e) => {
+    if (zoomKnihy <= 1) return;
+
+    setTahamKnihu(true);
+
+    zaciatokTahania.current = {
+      x: e.clientX - posunKnihy.x,
+      y: e.clientY - posunKnihy.y,
+    };
+  };
+
+  const tahajKnihu = (e) => {
+    if (!tahamKnihu || zoomKnihy <= 1) return;
+
+    setPosunKnihy({
+      x: e.clientX - zaciatokTahania.current.x,
+      y: e.clientY - zaciatokTahania.current.y,
+    });
+  };
+
+  const prestanTahatKnihu = () => {
+    setTahamKnihu(false);
+  };
+
   const otvorKnihu = () => {
     if (listujeSa) return;
+
+    resetZoomKnihy();
     setJeOtvorena(true);
   };
 
-  /*
-    1. OTOČENIE
-
-    Predná strana listu: Strana01
-    Zadná strana listu: Strana01 ako ľavá
-    Pravá pevná strana pod listom: Strana02
-
-    Dôležité:
-    Strana02 sa musí pripraviť ešte pred animáciou.
-  */
   const otocPrvuStranu = () => {
     if (listujeSa) return;
 
+    resetZoomKnihy();
     setListujeSa(true);
 
     setZobrazStrany12(true);
@@ -76,16 +120,10 @@ export default function Kniha() {
     }, 1400);
   };
 
-  /*
-    2. OTOČENIE
-
-    Predná strana listu: Strana02
-    Zadná strana listu: Strana03
-    Pravá pevná strana pod listom: Strana04
-  */
   const otocDalsiuStranu = () => {
     if (listujeSa) return;
 
+    resetZoomKnihy();
     setListujeSa(true);
 
     setZobrazStrany34(true);
@@ -100,16 +138,10 @@ export default function Kniha() {
     }, 1400);
   };
 
-  /*
-    3. OTOČENIE
-
-    Predná strana listu: Strana04
-    Zadná strana listu: Strana05
-    Pravá pevná strana pod listom: Strana06
-  */
   const otocTretiuStranu = () => {
     if (listujeSa) return;
 
+    resetZoomKnihy();
     setListujeSa(true);
 
     setZobrazStrany56(true);
@@ -124,15 +156,10 @@ export default function Kniha() {
     }, 1400);
   };
 
-  /*
-    SPÄŤ
-
-    Pri návrate necháme aktuálne strany počas animácie ešte zobrazené.
-    Až po skončení animácie ich vypneme.
-  */
   const spat = () => {
     if (listujeSa) return;
 
+    resetZoomKnihy();
     setListujeSa(true);
 
     if (otocenaStrana3) {
@@ -173,6 +200,8 @@ export default function Kniha() {
   const odZnova = () => {
     if (listujeSa) return;
 
+    resetZoomKnihy();
+
     setZobrazPrvuStranu(false);
 
     setOtocenaStrana1(false);
@@ -197,90 +226,96 @@ export default function Kniha() {
       <div className="ambient-light"></div>
 
       <div className="main-content-wrapper">
-        <div className="book-scene">
-          <div className={`book-container ${jeOtvorena ? "open" : "closed"}`}>
+        <div
+          className="book-scene"
+          onWheel={handleZoomKnihy}
+          onMouseDown={zacniTahatKnihu}
+          onMouseMove={tahajKnihu}
+          onMouseUp={prestanTahatKnihu}
+          onMouseLeave={prestanTahatKnihu}
+          onDoubleClick={resetZoomKnihy}
+        >
+          <div
+            className={`book-zoom-layer ${zoomKnihy > 1 ? "zoomnuta" : ""}`}
+            style={{
+              transform: `translate(${posunKnihy.x}px, ${posunKnihy.y}px) scale(${zoomKnihy})`,
+              cursor:
+                zoomKnihy > 1
+                  ? tahamKnihu
+                    ? "grabbing"
+                    : "grab"
+                  : "zoom-in",
+            }}
+          >
+            <div className={`book-container ${jeOtvorena ? "open" : "closed"}`}>
+              {/* ČÍSLA STRÁN */}
 
-            {/* ČÍSLA STRÁN */}
+              {!listujeSa && aktivnaDvojstrana === 1 && (
+                <>
+                  <div className="cislo-knihy cislo-lave">2</div>
+                  <div className="cislo-knihy cislo-prave">3</div>
+                </>
+              )}
 
-            {!listujeSa && aktivnaDvojstrana === 1 && (
-              <>
-                <div className="cislo-knihy cislo-lave">2</div>
-                <div className="cislo-knihy cislo-prave">3</div>
-              </>
-            )}
+              {!listujeSa && aktivnaDvojstrana === 2 && (
+                <>
+                  <div className="cislo-knihy cislo-lave">4</div>
+                  <div className="cislo-knihy cislo-prave">5</div>
+                </>
+              )}
 
-            {!listujeSa && aktivnaDvojstrana === 2 && (
-              <>
-                <div className="cislo-knihy cislo-lave">4</div>
-                <div className="cislo-knihy cislo-prave">5</div>
-              </>
-            )}
+              {!listujeSa && aktivnaDvojstrana === 3 && (
+                <>
+                  <div className="cislo-knihy cislo-lave">6</div>
+                  <div className="cislo-knihy cislo-prave">7</div>
+                </>
+              )}
 
-            {!listujeSa && aktivnaDvojstrana === 3 && (
-              <>
-                <div className="cislo-knihy cislo-lave">6</div>
-                <div className="cislo-knihy cislo-prave">7</div>
-              </>
-            )}
+              {/* PRAVÁ PEVNÁ STRANA POD OTÁČAJÚCIM SA LISTOM */}
 
-            {/* PRAVÁ PEVNÁ STRANA POD OTÁČAJÚCIM SA LISTOM */}
+              <div className="book-half book-right">
+                <div className="book-cover-back"></div>
+                <div className="fake-pages"></div>
 
-            <div className="book-half book-right">
-              <div className="book-cover-back"></div>
-              <div className="fake-pages"></div>
+                <div className="book-page right-page base-page">
+                  <div className="nice-text-container">
+                    {zobrazStrany56 && <Strana06 />}
 
-              <div className="book-page right-page base-page">
-                <div className="nice-text-container">
+                    {zobrazStrany34 && !zobrazStrany56 && <Strana04 />}
 
-                  {zobrazStrany56 && <Strana06 />}
-
-                  {zobrazStrany34 && !zobrazStrany56 && <Strana04 />}
-
-                  {zobrazStrany12 && !zobrazStrany34 && !zobrazStrany56 && (
-                    <Strana02 />
-                  )}
-
+                    {zobrazStrany12 && !zobrazStrany34 && !zobrazStrany56 && (
+                      <Strana02 />
+                    )}
+                  </div>
                 </div>
               </div>
+
+              {/* 1. OTÁČANÝ LIST */}
+
+              <OtocnaStrana
+                className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
+                prednaStrana={zobrazPrvuStranu && <Strana01 />}
+                zadnaStrana={<Strana01 typ="lava" />}
+              />
+
+              {/* 2. OTÁČANÝ LIST */}
+
+              <OtocnaStrana
+                className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
+                prednaStrana={zobrazStrany12 && <Strana02 />}
+                zadnaStrana={<Strana03 />}
+              />
+
+              {/* 3. OTÁČANÝ LIST */}
+
+              <OtocnaStrana
+                className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
+                prednaStrana={zobrazStrany34 && <Strana04 />}
+                zadnaStrana={<Strana05 />}
+              />
+
+              <Titulka jeOtvorena={jeOtvorena} />
             </div>
-
-            {/* 1. OTÁČANÝ LIST */}
-
-            <OtocnaStrana
-              className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
-              prednaStrana={
-                zobrazPrvuStranu && <Strana01 />
-              }
-              zadnaStrana={
-                <Strana01 typ="lava" />
-              }
-            />
-
-            {/* 2. OTÁČANÝ LIST */}
-
-            <OtocnaStrana
-              className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
-              prednaStrana={
-                zobrazStrany12 && <Strana02 />
-              }
-              zadnaStrana={
-                <Strana03 />
-              }
-            />
-
-            {/* 3. OTÁČANÝ LIST */}
-
-            <OtocnaStrana
-              className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
-              prednaStrana={
-                zobrazStrany34 && <Strana04 />
-              }
-              zadnaStrana={
-                <Strana05 />
-              }
-            />
-
-            <Titulka jeOtvorena={jeOtvorena} />
           </div>
         </div>
 
