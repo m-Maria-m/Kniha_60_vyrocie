@@ -1,5 +1,4 @@
-
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Titulka from "./Titulka";
 import OtocnaStrana from "./OtocnaStrana";
 import Ovladanie from "./Ovladanie";
@@ -10,6 +9,8 @@ import Strana03 from "../strany/Strana03";
 import Strana04 from "../strany/Strana04";
 import Strana05 from "../strany/Strana05";
 import Strana06 from "../strany/Strana06";
+import Strana07 from "../strany/Strana07";
+import Strana08 from "../strany/Strana08";
 
 export default function Kniha() {
   const [jeOtvorena, setJeOtvorena] = useState(false);
@@ -18,18 +19,16 @@ export default function Kniha() {
   const [otocenaStrana1, setOtocenaStrana1] = useState(false);
   const [otocenaStrana2, setOtocenaStrana2] = useState(false);
   const [otocenaStrana3, setOtocenaStrana3] = useState(false);
+  const [otocenaStrana4, setOtocenaStrana4] = useState(false);
 
   const [zobrazStrany12, setZobrazStrany12] = useState(false);
   const [zobrazStrany34, setZobrazStrany34] = useState(false);
   const [zobrazStrany56, setZobrazStrany56] = useState(false);
+  const [zobrazStrany78, setZobrazStrany78] = useState(false);
 
   const [aktivnaDvojstrana, setAktivnaDvojstrana] = useState(0);
   const [listujeSa, setListujeSa] = useState(false);
   const [zobrazTlacidla, setZobrazTlacidla] = useState(false);
-
-
-
-
 
   useEffect(() => {
     if (!jeOtvorena) return;
@@ -53,21 +52,10 @@ export default function Kniha() {
     setJeOtvorena(true);
   };
 
-  /*
-    1. OTOČENIE
-
-    Predná strana listu: Strana01
-    Zadná strana listu: Strana01 ako ľavá
-    Pravá pevná strana pod listom: Strana02
-
-    Dôležité:
-    Strana02 sa musí pripraviť ešte pred animáciou.
-  */
   const otocPrvuStranu = () => {
     if (listujeSa) return;
 
     setListujeSa(true);
-
     setZobrazStrany12(true);
     setAktivnaDvojstrana(1);
 
@@ -80,18 +68,10 @@ export default function Kniha() {
     }, 1400);
   };
 
-  /*
-    2. OTOČENIE
-
-    Predná strana listu: Strana02
-    Zadná strana listu: Strana03
-    Pravá pevná strana pod listom: Strana04
-  */
   const otocDalsiuStranu = () => {
     if (listujeSa) return;
 
     setListujeSa(true);
-
     setZobrazStrany34(true);
     setAktivnaDvojstrana(2);
 
@@ -104,18 +84,10 @@ export default function Kniha() {
     }, 1400);
   };
 
-  /*
-    3. OTOČENIE
-
-    Predná strana listu: Strana04
-    Zadná strana listu: Strana05
-    Pravá pevná strana pod listom: Strana06
-  */
   const otocTretiuStranu = () => {
     if (listujeSa) return;
 
     setListujeSa(true);
-
     setZobrazStrany56(true);
     setAktivnaDvojstrana(3);
 
@@ -128,16 +100,38 @@ export default function Kniha() {
     }, 1400);
   };
 
-  /*
-    SPÄŤ
+  const otocStvrtuStranu = () => {
+    if (listujeSa) return;
 
-    Pri návrate necháme aktuálne strany počas animácie ešte zobrazené.
-    Až po skončení animácie ich vypneme.
-  */
+    setListujeSa(true);
+    setZobrazStrany78(true);
+    setAktivnaDvojstrana(4);
+
+    requestAnimationFrame(() => {
+      setOtocenaStrana4(true);
+    });
+
+    setTimeout(() => {
+      setListujeSa(false);
+    }, 1400);
+  };
+
   const spat = () => {
     if (listujeSa) return;
 
     setListujeSa(true);
+
+    if (otocenaStrana4) {
+      setOtocenaStrana4(false);
+
+      setTimeout(() => {
+        setZobrazStrany78(false);
+        setAktivnaDvojstrana(3);
+        setListujeSa(false);
+      }, 1400);
+
+      return;
+    }
 
     if (otocenaStrana3) {
       setOtocenaStrana3(false);
@@ -182,10 +176,12 @@ export default function Kniha() {
     setOtocenaStrana1(false);
     setOtocenaStrana2(false);
     setOtocenaStrana3(false);
+    setOtocenaStrana4(false);
 
     setZobrazStrany12(false);
     setZobrazStrany34(false);
     setZobrazStrany56(false);
+    setZobrazStrany78(false);
 
     setAktivnaDvojstrana(0);
     setListujeSa(false);
@@ -203,7 +199,6 @@ export default function Kniha() {
       <div className="main-content-wrapper">
         <div className="book-scene">
           <div className={`book-container ${jeOtvorena ? "open" : "closed"}`}>
-
             {/* ČÍSLA STRÁN */}
 
             {!listujeSa && aktivnaDvojstrana === 1 && (
@@ -227,6 +222,13 @@ export default function Kniha() {
               </>
             )}
 
+            {!listujeSa && aktivnaDvojstrana === 4 && (
+              <>
+                <div className="cislo-knihy cislo-lave">8</div>
+                <div className="cislo-knihy cislo-prave">9</div>
+              </>
+            )}
+
             {/* PRAVÁ PEVNÁ STRANA POD OTÁČAJÚCIM SA LISTOM */}
 
             <div className="book-half book-right">
@@ -235,15 +237,18 @@ export default function Kniha() {
 
               <div className="book-page right-page base-page">
                 <div className="nice-text-container">
+                  {zobrazStrany78 && <Strana08 />}
 
-                  {zobrazStrany56 && <Strana06 />}
+                  {zobrazStrany56 && !zobrazStrany78 && <Strana06 />}
 
-                  {zobrazStrany34 && !zobrazStrany56 && <Strana04 />}
-
-                  {zobrazStrany12 && !zobrazStrany34 && !zobrazStrany56 && (
-                    <Strana02 />
+                  {zobrazStrany34 && !zobrazStrany56 && !zobrazStrany78 && (
+                    <Strana04 />
                   )}
 
+                  {zobrazStrany12 &&
+                    !zobrazStrany34 &&
+                    !zobrazStrany56 &&
+                    !zobrazStrany78 && <Strana02 />}
                 </div>
               </div>
             </div>
@@ -252,36 +257,32 @@ export default function Kniha() {
 
             <OtocnaStrana
               className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
-              prednaStrana={
-                zobrazPrvuStranu && <Strana01 />
-              }
-              zadnaStrana={
-                <Strana01 typ="lava" />
-              }
+              prednaStrana={zobrazPrvuStranu && <Strana01 />}
+              zadnaStrana={<Strana01 typ="lava" />}
             />
 
             {/* 2. OTÁČANÝ LIST */}
 
             <OtocnaStrana
               className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
-              prednaStrana={
-                zobrazStrany12 && <Strana02 />
-              }
-              zadnaStrana={
-                <Strana03 />
-              }
+              prednaStrana={zobrazStrany12 && <Strana02 />}
+              zadnaStrana={<Strana03 />}
             />
 
             {/* 3. OTÁČANÝ LIST */}
 
             <OtocnaStrana
               className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
-              prednaStrana={
-                zobrazStrany34 && <Strana04 />
-              }
-              zadnaStrana={
-                <Strana05 />
-              }
+              prednaStrana={zobrazStrany34 && <Strana04 />}
+              zadnaStrana={<Strana05 />}
+            />
+
+            {/* 4. OTÁČANÝ LIST */}
+
+            <OtocnaStrana
+              className={`fourth-page ${otocenaStrana4 ? "turned" : ""}`}
+              prednaStrana={zobrazStrany56 && <Strana06 />}
+              zadnaStrana={<Strana07 />}
             />
 
             <Titulka jeOtvorena={jeOtvorena} />
@@ -294,10 +295,12 @@ export default function Kniha() {
           otocenaStrana1={otocenaStrana1}
           otocenaStrana2={otocenaStrana2}
           otocenaStrana3={otocenaStrana3}
+          otocenaStrana4={otocenaStrana4}
           otvorKnihu={otvorKnihu}
           otocPrvuStranu={otocPrvuStranu}
           otocDalsiuStranu={otocDalsiuStranu}
           otocTretiuStranu={otocTretiuStranu}
+          otocStvrtuStranu={otocStvrtuStranu}
           spat={spat}
           odZnova={odZnova}
         />

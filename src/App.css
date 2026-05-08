@@ -1335,3 +1335,12 @@ body {
     padding: 5px 10px;
   }
 }
+.fourth-page {
+  z-index: 8;
+}
+
+.fourth-page.turned {
+  z-index: 70;
+}.cislo-knihy {
+  z-index: 9999;
+}

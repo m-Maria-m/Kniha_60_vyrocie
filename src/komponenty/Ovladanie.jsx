@@ -1,13 +1,18 @@
 export default function Ovladanie({
   jeOtvorena,
   zobrazTlacidla,
+
   otocenaStrana1,
   otocenaStrana2,
   otocenaStrana3,
+  otocenaStrana4,
+
   otvorKnihu,
   otocPrvuStranu,
   otocDalsiuStranu,
   otocTretiuStranu,
+  otocStvrtuStranu,
+
   spat,
   odZnova,
 }) {
@@ -34,6 +39,12 @@ export default function Ovladanie({
 
         {otocenaStrana2 && !otocenaStrana3 && (
           <button onClick={otocTretiuStranu} className="control-btn gold">
+            Ďalšia strana ➔
+          </button>
+        )}
+
+        {otocenaStrana3 && !otocenaStrana4 && (
+          <button onClick={otocStvrtuStranu} className="control-btn gold">
             Ďalšia strana ➔
           </button>
         )}
