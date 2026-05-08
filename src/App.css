@@ -795,7 +795,7 @@ body {
 }
 
 
-..book-scene {
+.book-scene {
   overflow: visible;
   user-select: none;
 }
