@@ -1,22 +1,24 @@
 import { PadajuciText } from "../komponenty/PadajuciText";
+import ZoomObrazok from "../komponenty/ZoomObrazok";
 import strana01Obrazok from "../assets/strana01.png";
+
 export default function Strana01({ typ }) {
   if (typ === "lava") {
     return (
-        <div className="strana-cely-obrazok-wrap">
-            <img
-                src={strana01Obrazok}
-                alt="Strana 01"
-                className="strana-cely-obrazok strana-lava"
-            />
-        </div>
+      <div className="strana-cely-obrazok-wrap">
+        <ZoomObrazok
+          src={strana01Obrazok}
+          alt="Strana 01"
+          className="strana-cely-obrazok strana-lava"
+        />
+      </div>
     );
   }
 
-    return (
-        <div className="text-content">
-            <PadajuciText text="ZŠ ŠKOLSKÁ 2" delay={0} className="title"/>
-            <PadajuciText text="MICHALOVCE" delay={1.2} className="subtitle" />
+  return (
+    <div className="text-content">
+      <PadajuciText text="ZŠ ŠKOLSKÁ 2" delay={0} className="title" />
+      <PadajuciText text="MICHALOVCE" delay={1.2} className="subtitle" />
 
       <div className="number-wrapper">
         <PadajuciText text="60" delay={2.5} className="number" />

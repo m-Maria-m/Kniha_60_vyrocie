@@ -1,9 +1,10 @@
 import strana05Obrazok from "../assets/strana05.png";
+import ZoomObrazok from "../komponenty/ZoomObrazok.jsx";
 
-export default function Strana04() {
+export default function Strana05() {
   return (
       <div className="strana-cely-obrazok-wrap">
-          <img
+          <ZoomObrazok
               src={strana05Obrazok}
               alt="Strana 04"
               className="strana-cely-obrazok strana-lava"
