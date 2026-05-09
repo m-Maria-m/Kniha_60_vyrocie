@@ -12,6 +12,7 @@ import Strana06 from "../strany/Strana06";
 import Strana07 from "../strany/Strana07";
 import Strana08 from "../strany/Strana08";
 
+
 export default function Kniha() {
   const [jeOtvorena, setJeOtvorena] = useState(false);
   const [zobrazPrvuStranu, setZobrazPrvuStranu] = useState(false);

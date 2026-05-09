@@ -1,0 +1,77 @@
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(28, 18, 10, 0.82);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-panel {
+  position: relative;
+  width: 94vw;
+  height: 94vh;
+  background: rgba(239, 226, 194, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.55);
+}
+
+.zoom-priestor {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-obrazok {
+  max-width: 96%;
+  max-height: 96%;
+  object-fit: contain;
+  user-select: none;
+  transition: transform 0.12s ease-out;
+  transform-origin: center center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.zoom-btn {
+  position: absolute;
+  z-index: 3;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 248, 230, 0.88);
+  color: #3a2a1d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 5px 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.zoom-btn.zatvorit {
+  top: 12px;
+  right: 12px;
+}
+
+.zoom-btn.reset {
+  top: 12px;
+  left: 12px;
+}
+
+.zoom-info {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  z-index: 3;
+  background: rgba(255, 248, 230, 0.78);
+  color: #4d3825;
+  font-size: 0.72rem;
+  border-radius: 999px;
+  padding: 5px 12px;
+  pointer-events: none;
+}

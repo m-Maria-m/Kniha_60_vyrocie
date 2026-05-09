@@ -1,0 +1,111 @@
+/* MOBIL – OPRAVA ÚVODNEJ DVOJSTRANY */
+
+@media (max-width: 768px) {
+  .uvod-lava-strana::before,
+  .uvod-prava-strana::before {
+    inset: 10px;
+    border-radius: 5px;
+  }
+
+  .uvod-lava-watermark,
+  .uvod-prava-watermark {
+    font-size: clamp(4rem, 26vw, 7rem);
+    top: 55%;
+    color: rgba(122, 27, 27, 0.04);
+  }
+
+  .uvod-lava-obsah,
+  .uvod-prava-obsah {
+    padding: 4% 5%;
+  }
+
+  /* ĽAVÁ ÚVODNÁ STRANA */
+
+  .uvod-lava-logo {
+    width: clamp(52px, 14vw, 84px);
+    margin-top: 8%;
+    margin-bottom: 8px;
+  }
+
+  .uvod-lava-text {
+    bottom: 27%;
+    max-width: 86%;
+
+    font-size: clamp(0.42rem, 1.8vw, 0.68rem);
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+
+    white-space: normal;
+  }
+
+  .uvod-lava-ciara {
+    bottom: 24.5%;
+    width: clamp(42px, 10vw, 70px);
+  }
+
+  .uvod-lava-motto {
+    bottom: 17%;
+    width: 76%;
+
+    font-size: clamp(0.34rem, 1.35vw, 0.54rem);
+    line-height: 1.35;
+  }
+
+  /* PRAVÁ ÚVODNÁ STRANA */
+
+  .uvod-prava-nazov {
+    margin-top: 8%;
+    gap: 4px;
+  }
+
+  .uvod-prava-nazov-text {
+    font-size: clamp(0.62rem, 2.5vw, 1rem);
+    letter-spacing: 0.05em;
+  }
+
+  .uvod-prava-nazov-cislo {
+    font-size: clamp(0.68rem, 2.6vw, 1.05rem);
+  }
+
+  .uvod-prava-podnazov {
+    margin-top: 7px;
+
+    font-size: clamp(0.34rem, 1.35vw, 0.54rem);
+    letter-spacing: 0.18em;
+  }
+
+  .uvod-prava-stred {
+    margin-top: 14px;
+    gap: 5px;
+  }
+
+  .uvod-prava-cislo {
+    font-size: clamp(1.7rem, 7vw, 3rem);
+    line-height: 0.9;
+  }
+
+  .uvod-prava-rokov {
+    font-size: clamp(0.42rem, 1.6vw, 0.7rem);
+    letter-spacing: 0.18em;
+  }
+
+  .uvod-prava-datum {
+    bottom: 27%;
+
+    font-size: clamp(0.34rem, 1.35vw, 0.54rem);
+    letter-spacing: 0.13em;
+  }
+
+  .uvod-prava-ciara {
+    bottom: 24.5%;
+    width: clamp(42px, 10vw, 70px);
+  }
+
+  .uvod-prava-motto {
+    bottom: 16.5%;
+    width: 76%;
+
+    font-size: clamp(0.32rem, 1.25vw, 0.52rem);
+    line-height: 1.3;
+  }
+}

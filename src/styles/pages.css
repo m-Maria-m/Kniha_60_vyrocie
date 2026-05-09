@@ -1,0 +1,194 @@
+.book-page {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(120, 80, 40, 0.1), transparent 16%),
+    radial-gradient(circle at 70% 70%, rgba(120, 80, 40, 0.07), transparent 18%),
+    linear-gradient(rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.03)),
+    #efe2c2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.left-page {
+  left: 18px;
+  right: 0;
+  border-radius: 14px 0 0 14px;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(120, 80, 40, 0.1), transparent 18%),
+    radial-gradient(circle at 80% 85%, rgba(120, 80, 40, 0.08), transparent 18%),
+    linear-gradient(to left, rgba(0, 0, 0, 0.17), rgba(0, 0, 0, 0.04) 8%, transparent 20%),
+    #efe2c2;
+}
+
+.right-page {
+  left: 0;
+  right: 18px;
+  border-radius: 0 14px 14px 0;
+  justify-content: flex-start;
+  padding-top: 70px;
+  background:
+    radial-gradient(circle at 70% 25%, rgba(120, 80, 40, 0.12), transparent 14%),
+    radial-gradient(circle at 25% 85%, rgba(120, 80, 40, 0.08), transparent 20%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.17), rgba(0, 0, 0, 0.04) 8%, transparent 20%),
+    #efe2c2;
+}
+
+.flipping-page .face::before,
+.book-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgba(120, 80, 40, 0.08) 1px, transparent 1px),
+    radial-gradient(rgba(80, 50, 25, 0.05) 1px, transparent 1px);
+  background-size: 6px 6px, 11px 11px;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.nice-text-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0 2rem;
+  color: #2a2118;
+  text-align: center;
+}
+
+.nice-title {
+  font-size: clamp(1rem, 1.8vw, 1.8rem);
+  color: #7a1b1b;
+  margin-bottom: clamp(8px, 1.2vw, 18px);
+  line-height: 1.15;
+}
+
+.nice-paragraph {
+  font-size: clamp(0.65rem, 1.05vw, 1.05rem);
+  line-height: 1.65;
+  color: #4d4034;
+  margin-bottom: clamp(8px, 1.2vw, 18px);
+  text-align: justify;
+}
+
+.divider-small {
+  width: clamp(32px, 4vw, 54px);
+  height: 2px;
+  background-color: #c79a41;
+  margin: 0 auto clamp(12px, 2vw, 28px) auto;
+}
+
+.strana-cely-obrazok-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.45);
+  color: #3a2a1d;
+  border: 1px solid rgba(80, 45, 20, 0.25);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.strana-cely-obrazok {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  object-position: center center;
+  border-radius: inherit;
+  cursor: zoom-in;
+}
+
+.strana-cely-obrazok.strana-lava {
+  transform: scale(1);
+}
+
+.strana-cely-obrazok.strana-prava {
+  transform: scale(1);
+}
+
+.flipping-page .face:has(.strana-cely-obrazok-wrap),
+.right-page:has(.strana-cely-obrazok-wrap) {
+  padding-top: 0;
+}
+
+.right-page:has(.strana-cely-obrazok-wrap) .nice-text-container,
+.flipping-page .face:has(.strana-cely-obrazok-wrap) .nice-text-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.book-container.closed .flipping-page {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.book-container.open .flipping-page {
+  opacity: 1;
+}
+
+.first-page {
+  z-index: 25;
+}
+
+.first-page.turned {
+  z-index: 42;
+}
+
+.second-page {
+  z-index: 18;
+}
+
+.second-page.turned {
+  z-index: 50;
+}
+
+.third-page {
+  z-index: 12;
+}
+
+.third-page.turned {
+  z-index: 60;
+}
+
+.fourth-page {
+  z-index: 8;
+}
+
+.fourth-page.turned {
+  z-index: 70;
+}
+
+.cislo-knihy {
+  position: absolute;
+  bottom: 10px;
+  z-index: 9999;
+  font-size: 0.6rem;
+  color: #8d7b5a;
+  font-style: italic;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.cislo-lave {
+  left: 25px;
+}
+
+.cislo-prave {
+  right: 25px;
+}
