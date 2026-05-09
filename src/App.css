@@ -7,3 +7,32 @@
 @import "./styles/intro-pages.css";
 @import "./styles/mobile.css";
 
+/* ANIMÁCIA PÍSMEN */
+
+.animate-ink-drop {
+  display: inline-block;
+  opacity: 0;
+  animation: inkDrop 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes inkDrop {
+  0% {
+    transform: translate(var(--rand-x), -70vh) rotate(var(--rand-rot)) scale(1.8);
+    opacity: 0;
+    filter: blur(8px);
+    color: #c79a41;
+  }
+
+  50% {
+    opacity: 1;
+    filter: blur(1px);
+    color: #c79a41;
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+    filter: blur(0);
+    color: inherit;
+  }
+}
