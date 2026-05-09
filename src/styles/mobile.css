@@ -176,3 +176,31 @@
     z-index: 999999;
   }
 }
+/* MOBIL – ČITATEĽNEJŠIE BUTTONY */
+
+@media (max-width: 768px) {
+  .controls-wrapper {
+    bottom: calc(env(safe-area-inset-bottom) + 10px);
+  }
+
+  .controls-inner {
+    gap: 2px;
+    padding: 4px 7px;
+    max-width: 94vw;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .control-btn {
+    padding: 4px 6px;
+    font-size: 0.6rem;
+    line-height: 1.15;
+    border-radius: 16px;
+    font-weight: 600;
+  }
+
+  .otvor-knihu-btn {
+    padding: 3px 6px;
+    font-size: 0.65rem;
+  }
+}
