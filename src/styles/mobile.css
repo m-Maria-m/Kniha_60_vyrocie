@@ -163,3 +163,16 @@
     z-index: 999999;
   }
 }
+/* NA MOBILE SKRYŤ TLAČIDLO OBNOVIŤ V ZOOME */
+
+@media (max-width: 768px) {
+  .zoom-btn.reset {
+    display: none;
+  }
+
+  .zoom-btn.zatvorit {
+    top: calc(env(safe-area-inset-top) + 18px);
+    right: 14px;
+    z-index: 999999;
+  }
+}
