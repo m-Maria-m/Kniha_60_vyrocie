@@ -203,3 +203,18 @@
     inset -1px 0 3px rgba(0, 0, 0, 0.12);
   z-index: 2;
 }
+.book-stage {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 1.42 / 1;
+  width: auto;
+  max-width: 100vw;
+  transform-style: preserve-3d;
+  touch-action: pan-y;
+}
+
+.book-stage > .book-container {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
