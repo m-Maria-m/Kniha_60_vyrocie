@@ -322,3 +322,16 @@
     padding: 4px 8px;
   }
 }
+/* =========================
+   VEĽKÝ MONITOR - ŠÍPKY VIAC MIMO KNIHY
+   ========================= */
+
+@media (min-width: 1700px) {
+  .side-arrow-left {
+    left: -70px;
+  }
+
+  .side-arrow-right {
+    right: -70px;
+  }
+}
