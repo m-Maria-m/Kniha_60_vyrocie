@@ -229,24 +229,6 @@
 }
 
 
-
-@media (max-width: 1400px) {
-  .side-arrow {
-    width: 31px;
-    height: 52px;
-    font-size: 2.05rem;
-  }
-
-  .side-arrow-left {
-    left: clamp(90px, 12.8vw, 250px);
-  }
-
-  .side-arrow-right {
-    right: clamp(82px, 11.2vw, 235px);
-  }
-}
-
-
 /* =========================
    TABLET
    ========================= */
