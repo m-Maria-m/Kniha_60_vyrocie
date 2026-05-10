@@ -1,16 +1,18 @@
+/* =========================
+   OVLÁDANIE KNIHY
+   ========================= */
+
+/* Spodný wrapper - používa sa hlavne pre tlačidlo "Otvoriť knihu" */
 .controls-wrapper {
   position: fixed;
   left: 50%;
   bottom: 10px;
   transform: translateX(-50%);
-
   width: auto;
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
-
   display: flex;
   justify-content: center;
-
   z-index: 9999;
 }
 
@@ -21,28 +23,34 @@
 .controls-inner {
   display: flex;
   gap: 6px;
-
   background: rgba(243, 223, 189, 0.62);
   padding: 5px 9px;
-
   border-radius: 999px;
   border: 1px solid rgba(80, 45, 20, 0.16);
-
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
+
+
+/* =========================
+   ZÁKLADNÉ TLAČIDLÁ
+   ========================= */
 
 .control-btn {
   padding: 6px 12px;
   border-radius: 18px;
-
   cursor: pointer;
-
   font-size: 0.72rem;
   line-height: 1.15;
   font-weight: 600;
-
-  transition: all 0.3s;
   border: none;
+
+  transition:
+    background 0.22s ease,
+    color 0.22s ease,
+    opacity 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
 }
 
 .control-btn.outline {
@@ -58,18 +66,26 @@
 }
 
 .control-btn:hover {
-  transform: translateY(-1px);
+  opacity: 0.96;
 }
+
+.control-btn:disabled,
+.control-btn:disabled:hover {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   TLAČIDLO OTVORIŤ KNIHU
+   ========================= */
 
 .otvor-knihu-btn {
   padding: 7px 14px;
-
   font-size: 0.78rem;
   font-weight: 700;
-
   background: rgba(122, 27, 27, 0.88);
   color: #fff6d8;
-
   border: 1px solid rgba(255, 230, 170, 0.8);
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
 }
@@ -77,4 +93,250 @@
 .otvor-knihu-btn:hover {
   background: rgba(150, 35, 30, 0.95);
   color: #ffffff;
+}
+
+
+/* =========================
+   BOČNÉ ŠÍPKY
+   iba samotný znak,
+   bez podkladu a bez rámika
+
+   Dôležité:
+   ľavá a pravá šípka majú samostatnú hodnotu,
+   lebo kniha je opticky mierne asymetrická.
+   ========================= */
+
+.side-arrow {
+  position: fixed;
+  top: 50%;
+  z-index: 120;
+
+  width: 34px;
+  height: 58px;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: transparent !important;
+  border: none !important;
+  outline: none;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  color: rgba(122, 27, 27, 0.78);
+  font-size: 2.35rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: pointer;
+  transform: translateY(-50%);
+
+  text-shadow:
+    0 1px 1px rgba(255, 245, 220, 0.75),
+    0 2px 5px rgba(0, 0, 0, 0.14);
+
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+/* Na veľkom monitore aj notebooku.
+   Väčšie číslo = šípka ide viac ku knihe. */
+.side-arrow-left {
+  left: clamp(100px, 11.5vw, 320px);
+}
+
+.side-arrow-right {
+  right: clamp(100px, 11vw, 320px);
+}
+
+/* Vypnutie všetkých ozdobných vrstiev zo starších verzií */
+.side-arrow::before,
+.side-arrow::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Bez pohybu pri prejdení myšou, kliknutí aj focuse */
+.side-arrow:hover,
+.side-arrow:active,
+.side-arrow:focus {
+  transform: translateY(-50%);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.side-arrow:hover {
+  color: rgba(95, 18, 18, 0.95);
+  text-shadow:
+    0 1px 1px rgba(255, 245, 220, 0.9),
+    0 3px 7px rgba(0, 0, 0, 0.18);
+}
+
+.side-arrow:disabled,
+.side-arrow:disabled:hover,
+.side-arrow:disabled:active {
+  opacity: 0.25;
+  cursor: not-allowed;
+  transform: translateY(-50%);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.side-arrow:focus-visible {
+  outline: none;
+  color: rgba(80, 12, 12, 1);
+  text-shadow:
+    0 1px 1px rgba(255, 245, 220, 0.9),
+    0 0 9px rgba(122, 27, 27, 0.35);
+}
+
+
+/* =========================
+   PREHRAŤ ZNOVA
+   ========================= */
+
+.reset-wrapper {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 120;
+}
+
+.reset-btn {
+  white-space: nowrap;
+  opacity: 0.76;
+  background: rgba(255, 255, 255, 0.38);
+  color: #3a2a1d;
+  border: 1px solid rgba(80, 45, 20, 0.25);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.reset-btn:hover {
+  opacity: 0.96;
+}
+
+
+
+@media (max-width: 1400px) {
+  .side-arrow {
+    width: 31px;
+    height: 52px;
+    font-size: 2.05rem;
+  }
+
+  .side-arrow-left {
+    left: clamp(90px, 12.8vw, 250px);
+  }
+
+  .side-arrow-right {
+    right: clamp(82px, 11.2vw, 235px);
+  }
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 1024px) {
+  .side-arrow {
+    width: 30px;
+    height: 50px;
+    font-size: 1.9rem;
+  }
+
+  .side-arrow-left {
+    left: clamp(18px, 4.5vw, 70px);
+  }
+
+  .side-arrow-right {
+    right: clamp(18px, 4.5vw, 70px);
+  }
+}
+
+
+/* =========================
+   MOBIL
+   ========================= */
+
+@media (max-width: 768px) {
+  .controls-wrapper {
+    bottom: 8px;
+  }
+
+  .controls-inner {
+    padding: 4px 7px;
+  }
+
+  .control-btn {
+    font-size: 0.68rem;
+    padding: 5px 10px;
+  }
+
+  .otvor-knihu-btn {
+    font-size: 0.74rem;
+    padding: 6px 12px;
+  }
+
+  .side-arrow {
+    width: 28px;
+    height: 48px;
+    font-size: 1.75rem;
+  }
+
+  .side-arrow-left {
+    left: 8px;
+  }
+
+  .side-arrow-right {
+    right: 8px;
+  }
+
+  .reset-wrapper {
+    bottom: 8px;
+  }
+
+  .reset-btn {
+    font-size: 0.64rem;
+    padding: 5px 9px;
+  }
+}
+
+
+/* =========================
+   VEĽMI MALÝ MOBIL
+   ========================= */
+
+@media (max-width: 430px) {
+  .side-arrow {
+    width: 24px;
+    height: 44px;
+    font-size: 1.55rem;
+  }
+
+  .side-arrow-left {
+    left: 4px;
+  }
+
+  .side-arrow-right {
+    right: 4px;
+  }
+
+  .reset-btn {
+    font-size: 0.6rem;
+    padding: 4px 8px;
+  }
 }

@@ -1,66 +1,98 @@
 export default function Ovladanie({
-  jeOtvorena,
-  zobrazTlacidla,
+                                      jeOtvorena,
+                                      zobrazTlacidla,
+                                      listujeSa,
+                                      otocenaStrana1,
+                                      otocenaStrana2,
+                                      otocenaStrana3,
+                                      otocenaStrana4,
+                                      otvorKnihu,
+                                      otocPrvuStranu,
+                                      otocDalsiuStranu,
+                                      otocTretiuStranu,
+                                      otocStvrtuStranu,
+                                      spat,
+                                      odZnova,
+                                  }) {
+    const chodDopredu = () => {
+        if (listujeSa) return;
 
-  otocenaStrana1,
-  otocenaStrana2,
-  otocenaStrana3,
-  otocenaStrana4,
+        if (!otocenaStrana1) {
+            otocPrvuStranu();
+            return;
+        }
 
-  otvorKnihu,
-  otocPrvuStranu,
-  otocDalsiuStranu,
-  otocTretiuStranu,
-  otocStvrtuStranu,
+        if (!otocenaStrana2) {
+            otocDalsiuStranu();
+            return;
+        }
 
-  spat,
-  odZnova,
-}) {
-  return (
-    <div className="controls-wrapper visible">
-      <div className="controls-inner">
-        {!jeOtvorena && (
-          <button onClick={otvorKnihu} className="control-btn otvor-knihu-btn">
-            Otvoriť knihu
-          </button>
-        )}
+        if (!otocenaStrana3) {
+            otocTretiuStranu();
+            return;
+        }
 
-        {zobrazTlacidla && !otocenaStrana1 && jeOtvorena && (
-          <button onClick={otocPrvuStranu} className="control-btn gold">
-            Otočiť stranu ➔
-          </button>
-        )}
+        if (!otocenaStrana4) {
+            otocStvrtuStranu();
+        }
+    };
 
-        {otocenaStrana1 && !otocenaStrana2 && (
-          <button onClick={otocDalsiuStranu} className="control-btn gold">
-            Ďalšia strana ➔
-          </button>
-        )}
+    const mozemIstDopredu = jeOtvorena && zobrazTlacidla && !otocenaStrana4;
+    const mozemIstSpat = jeOtvorena && otocenaStrana1;
 
-        {otocenaStrana2 && !otocenaStrana3 && (
-          <button onClick={otocTretiuStranu} className="control-btn gold">
-            Ďalšia strana ➔
-          </button>
-        )}
+    return (
+        <>
+            {!jeOtvorena && (
+                <div className="controls-wrapper visible">
+                    <div className="controls-inner">
+                        <button
+                            onClick={otvorKnihu}
+                            disabled={listujeSa}
+                            className="control-btn otvor-knihu-btn"
+                        >
+                            Otvoriť knihu
+                        </button>
+                    </div>
+                </div>
+            )}
 
-        {otocenaStrana3 && !otocenaStrana4 && (
-          <button onClick={otocStvrtuStranu} className="control-btn gold">
-            Ďalšia strana ➔
-          </button>
-        )}
+            {jeOtvorena && (
+                <>
+                    {mozemIstSpat && (
+                        <button
+                            onClick={spat}
+                            disabled={listujeSa}
+                            className="side-arrow side-arrow-left"
+                            aria-label="Predošlá strana"
+                            title="Predošlá strana"
+                        >
+                            ❮
+                        </button>
+                    )}
 
-        {otocenaStrana1 && (
-          <button onClick={spat} className="control-btn gold">
-            Predošlá strana
-          </button>
-        )}
+                    {mozemIstDopredu && (
+                        <button
+                            onClick={chodDopredu}
+                            disabled={listujeSa}
+                            className="side-arrow side-arrow-right"
+                            aria-label="Ďalšia strana"
+                            title="Ďalšia strana"
+                        >
+                            ❯
+                        </button>
+                    )}
 
-        {jeOtvorena && (
-          <button onClick={odZnova} className="control-btn outline">
-            ↻ Prehrať znova
-          </button>
-        )}
-      </div>
-    </div>
-  );
+                    <div className="reset-wrapper">
+                        <button
+                            onClick={odZnova}
+                            disabled={listujeSa}
+                            className="control-btn outline reset-btn"
+                        >
+                            ↻ Prehrať znova
+                        </button>
+                    </div>
+                </>
+            )}
+        </>
+    );
 }
