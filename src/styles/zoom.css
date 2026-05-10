@@ -75,3 +75,11 @@
   padding: 5px 12px;
   pointer-events: none;
 }
+
+.zoom-priestor {
+  touch-action: none;
+}
+
+.zoom-obrazok {
+  -webkit-user-drag: none;
+}
