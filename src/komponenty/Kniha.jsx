@@ -12,7 +12,6 @@ import Strana06 from "../strany/Strana06";
 import Strana07 from "../strany/Strana07";
 import Strana08 from "../strany/Strana08";
 
-
 export default function Kniha() {
   const [jeOtvorena, setJeOtvorena] = useState(false);
   const [zobrazPrvuStranu, setZobrazPrvuStranu] = useState(false);
@@ -50,6 +49,7 @@ export default function Kniha() {
 
   const otvorKnihu = () => {
     if (listujeSa) return;
+
     setJeOtvorena(true);
   };
 
@@ -193,6 +193,80 @@ export default function Kniha() {
     }, 50);
   };
 
+  useEffect(() => {
+    const jeFormularovyPrvok = (element) => {
+      const tag = element?.tagName?.toLowerCase();
+
+      return (
+        tag === "input" ||
+        tag === "textarea" ||
+        tag === "select" ||
+        element?.isContentEditable
+      );
+    };
+
+    const handleKeyDown = (event) => {
+      if (jeFormularovyPrvok(document.activeElement)) return;
+      if (document.querySelector(".zoom-overlay")) return;
+      if (listujeSa) return;
+
+      if (!jeOtvorena && event.key === "Enter") {
+        event.preventDefault();
+        otvorKnihu();
+        return;
+      }
+
+      if (!jeOtvorena) return;
+
+      if (event.key === "Home" || event.key.toLowerCase() === "r") {
+        event.preventDefault();
+        odZnova();
+        return;
+      }
+
+      if (!zobrazTlacidla) return;
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+
+        if (!otocenaStrana1) {
+          otocPrvuStranu();
+          return;
+        }
+
+        if (!otocenaStrana2) {
+          otocDalsiuStranu();
+          return;
+        }
+
+        if (!otocenaStrana3) {
+          otocTretiuStranu();
+          return;
+        }
+
+        if (!otocenaStrana4) {
+          otocStvrtuStranu();
+        }
+
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+
+        if (otocenaStrana1) {
+          spat();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  });
+
   return (
     <div className="my-app-wrapper">
       <div className="ambient-light"></div>
@@ -293,6 +367,7 @@ export default function Kniha() {
         <Ovladanie
           jeOtvorena={jeOtvorena}
           zobrazTlacidla={zobrazTlacidla}
+          listujeSa={listujeSa}
           otocenaStrana1={otocenaStrana1}
           otocenaStrana2={otocenaStrana2}
           otocenaStrana3={otocenaStrana3}
