@@ -83,3 +83,22 @@
 .zoom-obrazok {
   -webkit-user-drag: none;
 }
+
+.zoom-priestor {
+  touch-action: none;
+}
+
+.zoom-obrazok {
+  -webkit-user-drag: none;
+}
+/* MOBILNÝ ZOOM V MODÁLNOM OKNE */
+
+.zoom-panel,
+.zoom-priestor {
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+.zoom-obrazok {
+  -webkit-user-drag: none;
+}

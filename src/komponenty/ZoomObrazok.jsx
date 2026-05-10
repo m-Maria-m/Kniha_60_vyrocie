@@ -1,6 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 4;
+const DVOJTUK_ZOOM = 2.2;
+
+const obmedzZoom = (hodnota) => {
+  return Math.min(Math.max(hodnota, MIN_ZOOM), MAX_ZOOM);
+};
+
+const vzdialenostMedziDotykmi = (touches) => {
+  if (touches.length < 2) return 0;
+
+  const prvy = touches[0];
+  const druhy = touches[1];
+
+  const rozdielX = prvy.clientX - druhy.clientX;
+  const rozdielY = prvy.clientY - druhy.clientY;
+
+  return Math.sqrt(rozdielX * rozdielX + rozdielY * rozdielY);
+};
+
 export default function ZoomObrazok({ src, alt, className = "" }) {
   const [otvorene, setOtvorene] = useState(false);
   const [zoom, setZoom] = useState(1);
@@ -8,6 +28,14 @@ export default function ZoomObrazok({ src, alt, className = "" }) {
   const [taham, setTaham] = useState(false);
 
   const startTah = useRef({ x: 0, y: 0 });
+  const poslednyTap = useRef(0);
+  const prebiehalPinch = useRef(false);
+
+  const pinch = useRef({
+    aktivny: false,
+    vzdialenost: 0,
+    zoom: 1,
+  });
 
   const resetZoomHodnoty = useCallback(() => {
     setZoom(1);
@@ -22,15 +50,26 @@ export default function ZoomObrazok({ src, alt, className = "" }) {
 
   const zatvorZoom = useCallback(() => {
     setOtvorene(false);
-    setZoom(1);
-    setPosun({ x: 0, y: 0 });
-    setTaham(false);
-  }, []);
+    resetZoomHodnoty();
+  }, [resetZoomHodnoty]);
 
   const resetZoom = (e) => {
     e?.stopPropagation();
     resetZoomHodnoty();
   };
+
+  const prepniDvojtukZoom = useCallback(() => {
+    setTaham(false);
+
+    setZoom((povodnyZoom) => {
+      if (povodnyZoom > 1) {
+        setPosun({ x: 0, y: 0 });
+        return 1;
+      }
+
+      return DVOJTUK_ZOOM;
+    });
+  }, []);
 
   useEffect(() => {
     if (!otvorene) return;
@@ -65,7 +104,7 @@ export default function ZoomObrazok({ src, alt, className = "" }) {
 
     setZoom((povodnyZoom) => {
       const krok = e.deltaY < 0 ? 0.15 : -0.15;
-      const novyZoom = Math.min(Math.max(povodnyZoom + krok, 1), 4);
+      const novyZoom = obmedzZoom(povodnyZoom + krok);
 
       if (novyZoom === 1) {
         setPosun({ x: 0, y: 0 });
@@ -99,32 +138,97 @@ export default function ZoomObrazok({ src, alt, className = "" }) {
     });
   };
 
-  const zacniTahatDotykom = (e) => {
-    if (zoom <= 1) return;
+  const zacniDotyk = (e) => {
+    if (e.touches.length >= 2) {
+      e.preventDefault();
 
-    const touch = e.touches[0];
-    if (!touch) return;
+      const aktualnaVzdialenost = vzdialenostMedziDotykmi(e.touches);
 
-    setTaham(true);
+      prebiehalPinch.current = true;
+      setTaham(false);
 
-    startTah.current = {
-      x: touch.clientX - posun.x,
-      y: touch.clientY - posun.y,
-    };
+      pinch.current = {
+        aktivny: true,
+        vzdialenost: aktualnaVzdialenost,
+        zoom,
+      };
+
+      return;
+    }
+
+    if (e.touches.length === 1 && zoom > 1) {
+      const touch = e.touches[0];
+
+      setTaham(true);
+
+      startTah.current = {
+        x: touch.clientX - posun.x,
+        y: touch.clientY - posun.y,
+      };
+    }
   };
 
-  const tahajDotykom = (e) => {
-    if (!taham || zoom <= 1) return;
+  const pohybDotykom = (e) => {
+    if (e.touches.length >= 2 && pinch.current.aktivny) {
+      e.preventDefault();
 
-    const touch = e.touches[0];
-    if (!touch) return;
+      const aktualnaVzdialenost = vzdialenostMedziDotykmi(e.touches);
 
-    e.preventDefault();
+      if (!aktualnaVzdialenost || !pinch.current.vzdialenost) return;
 
-    setPosun({
-      x: touch.clientX - startTah.current.x,
-      y: touch.clientY - startTah.current.y,
-    });
+      const pomer = aktualnaVzdialenost / pinch.current.vzdialenost;
+      const novyZoom = obmedzZoom(pinch.current.zoom * pomer);
+
+      setZoom(novyZoom);
+
+      if (novyZoom === 1) {
+        setPosun({ x: 0, y: 0 });
+      }
+
+      return;
+    }
+
+    if (e.touches.length === 1 && taham && zoom > 1) {
+      e.preventDefault();
+
+      const touch = e.touches[0];
+
+      setPosun({
+        x: touch.clientX - startTah.current.x,
+        y: touch.clientY - startTah.current.y,
+      });
+    }
+  };
+
+  const ukonciDotyk = (e) => {
+    if (e.touches.length < 2) {
+      pinch.current.aktivny = false;
+    }
+
+    if (e.touches.length === 0) {
+      setTaham(false);
+    }
+
+    if (prebiehalPinch.current) {
+      setTimeout(() => {
+        prebiehalPinch.current = false;
+      }, 150);
+
+      return;
+    }
+
+    if (e.changedTouches.length === 1 && e.touches.length === 0) {
+      const teraz = Date.now();
+
+      if (teraz - poslednyTap.current < 320) {
+        e.preventDefault();
+        prepniDvojtukZoom();
+        poslednyTap.current = 0;
+        return;
+      }
+
+      poslednyTap.current = teraz;
+    }
   };
 
   const prestanTahat = () => {
@@ -175,11 +279,14 @@ export default function ZoomObrazok({ src, alt, className = "" }) {
                 onMouseMove={tahaj}
                 onMouseUp={prestanTahat}
                 onMouseLeave={prestanTahat}
-                onTouchStart={zacniTahatDotykom}
-                onTouchMove={tahajDotykom}
-                onTouchEnd={prestanTahat}
-                onTouchCancel={prestanTahat}
-                onDoubleClick={resetZoom}
+                onTouchStart={zacniDotyk}
+                onTouchMove={pohybDotykom}
+                onTouchEnd={ukonciDotyk}
+                onTouchCancel={ukonciDotyk}
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                  prepniDvojtukZoom();
+                }}
               >
                 <img
                   src={src}
@@ -188,13 +295,14 @@ export default function ZoomObrazok({ src, alt, className = "" }) {
                   draggable="false"
                   style={{
                     transform: `translate(${posun.x}px, ${posun.y}px) scale(${zoom})`,
-                    cursor: zoom > 1 ? (taham ? "grabbing" : "grab") : "zoom-in",
+                    cursor:
+                      zoom > 1 ? (taham ? "grabbing" : "grab") : "zoom-in",
                   }}
                 />
               </div>
 
               <div className="zoom-info">
-                kolieskom priblížiš / oddiališ • ťahaním posunieš • dvojklik alebo 0 obnoví • Esc zatvorí
+                kolieskom alebo dvoma prstami priblížiš • ťahaním posunieš • dvojťuk obnoví
               </div>
             </div>
           </div>,
