@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Titulka from "./Titulka";
 import OtocnaStrana from "./OtocnaStrana";
 import Ovladanie from "./Ovladanie";
@@ -29,8 +29,6 @@ export default function Kniha() {
   const [aktivnaDvojstrana, setAktivnaDvojstrana] = useState(0);
   const [listujeSa, setListujeSa] = useState(false);
   const [zobrazTlacidla, setZobrazTlacidla] = useState(false);
-
-  const touchStartRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     if (!jeOtvorena) return;
@@ -195,70 +193,6 @@ export default function Kniha() {
     }, 50);
   };
 
-  const chodDopredu = () => {
-    if (listujeSa) return;
-    if (!jeOtvorena) return;
-    if (!zobrazTlacidla) return;
-
-    if (!otocenaStrana1) {
-      otocPrvuStranu();
-      return;
-    }
-
-    if (!otocenaStrana2) {
-      otocDalsiuStranu();
-      return;
-    }
-
-    if (!otocenaStrana3) {
-      otocTretiuStranu();
-      return;
-    }
-
-    if (!otocenaStrana4) {
-      otocStvrtuStranu();
-    }
-  };
-
-  const handleTouchStart = (event) => {
-    if (document.querySelector(".zoom-overlay")) return;
-
-    const touch = event.touches[0];
-    if (!touch) return;
-
-    touchStartRef.current = {
-      x: touch.clientX,
-      y: touch.clientY,
-    };
-  };
-
-  const handleTouchEnd = (event) => {
-    if (document.querySelector(".zoom-overlay")) return;
-    if (!jeOtvorena) return;
-    if (!zobrazTlacidla) return;
-    if (listujeSa) return;
-
-    const touch = event.changedTouches[0];
-    if (!touch) return;
-
-    const rozdielX = touch.clientX - touchStartRef.current.x;
-    const rozdielY = touch.clientY - touchStartRef.current.y;
-
-    const jeHorizontalnyPohyb = Math.abs(rozdielX) > Math.abs(rozdielY) * 1.25;
-    const jeDostatocnyPohyb = Math.abs(rozdielX) > 55;
-
-    if (!jeHorizontalnyPohyb || !jeDostatocnyPohyb) return;
-
-    if (rozdielX < 0) {
-      chodDopredu();
-      return;
-    }
-
-    if (rozdielX > 0 && otocenaStrana1) {
-      spat();
-    }
-  };
-
   useEffect(() => {
     const jeFormularovyPrvok = (element) => {
       const tag = element?.tagName?.toLowerCase();
@@ -294,7 +228,26 @@ export default function Kniha() {
 
       if (event.key === "ArrowRight") {
         event.preventDefault();
-        chodDopredu();
+
+        if (!otocenaStrana1) {
+          otocPrvuStranu();
+          return;
+        }
+
+        if (!otocenaStrana2) {
+          otocDalsiuStranu();
+          return;
+        }
+
+        if (!otocenaStrana3) {
+          otocTretiuStranu();
+          return;
+        }
+
+        if (!otocenaStrana4) {
+          otocStvrtuStranu();
+        }
+
         return;
       }
 
@@ -320,119 +273,113 @@ export default function Kniha() {
 
       <div className="main-content-wrapper">
         <div className="book-scene">
-          <div
-            className="book-stage"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div className={`book-container ${jeOtvorena ? "open" : "closed"}`}>
-              {/* ČÍSLA STRÁN */}
+          <div className={`book-container ${jeOtvorena ? "open" : "closed"}`}>
+            {/* ČÍSLA STRÁN */}
 
-              {!listujeSa && aktivnaDvojstrana === 1 && (
-                <>
-                  <div className="cislo-knihy cislo-lave">2</div>
-                  <div className="cislo-knihy cislo-prave">3</div>
-                </>
-              )}
+            {!listujeSa && aktivnaDvojstrana === 1 && (
+              <>
+                <div className="cislo-knihy cislo-lave">2</div>
+                <div className="cislo-knihy cislo-prave">3</div>
+              </>
+            )}
 
-              {!listujeSa && aktivnaDvojstrana === 2 && (
-                <>
-                  <div className="cislo-knihy cislo-lave">4</div>
-                  <div className="cislo-knihy cislo-prave">5</div>
-                </>
-              )}
+            {!listujeSa && aktivnaDvojstrana === 2 && (
+              <>
+                <div className="cislo-knihy cislo-lave">4</div>
+                <div className="cislo-knihy cislo-prave">5</div>
+              </>
+            )}
 
-              {!listujeSa && aktivnaDvojstrana === 3 && (
-                <>
-                  <div className="cislo-knihy cislo-lave">6</div>
-                  <div className="cislo-knihy cislo-prave">7</div>
-                </>
-              )}
+            {!listujeSa && aktivnaDvojstrana === 3 && (
+              <>
+                <div className="cislo-knihy cislo-lave">6</div>
+                <div className="cislo-knihy cislo-prave">7</div>
+              </>
+            )}
 
-              {!listujeSa && aktivnaDvojstrana === 4 && (
-                <>
-                  <div className="cislo-knihy cislo-lave">8</div>
-                  <div className="cislo-knihy cislo-prave">9</div>
-                </>
-              )}
+            {!listujeSa && aktivnaDvojstrana === 4 && (
+              <>
+                <div className="cislo-knihy cislo-lave">8</div>
+                <div className="cislo-knihy cislo-prave">9</div>
+              </>
+            )}
 
-              {/* PRAVÁ PEVNÁ STRANA POD OTÁČAJÚCIM SA LISTOM */}
+            {/* PRAVÁ PEVNÁ STRANA POD OTÁČAJÚCIM SA LISTOM */}
 
-              <div className="book-half book-right">
-                <div className="book-cover-back"></div>
-                <div className="fake-pages"></div>
+            <div className="book-half book-right">
+              <div className="book-cover-back"></div>
+              <div className="fake-pages"></div>
 
-                <div className="book-page right-page base-page">
-                  <div className="nice-text-container">
-                    {zobrazStrany78 && <Strana08 />}
+              <div className="book-page right-page base-page">
+                <div className="nice-text-container">
+                  {zobrazStrany78 && <Strana08 />}
 
-                    {zobrazStrany56 && !zobrazStrany78 && <Strana06 />}
+                  {zobrazStrany56 && !zobrazStrany78 && <Strana06 />}
 
-                    {zobrazStrany34 && !zobrazStrany56 && !zobrazStrany78 && (
-                      <Strana04 />
-                    )}
+                  {zobrazStrany34 && !zobrazStrany56 && !zobrazStrany78 && (
+                    <Strana04 />
+                  )}
 
-                    {zobrazStrany12 &&
-                      !zobrazStrany34 &&
-                      !zobrazStrany56 &&
-                      !zobrazStrany78 && <Strana02 />}
-                  </div>
+                  {zobrazStrany12 &&
+                    !zobrazStrany34 &&
+                    !zobrazStrany56 &&
+                    !zobrazStrany78 && <Strana02 />}
                 </div>
               </div>
-
-              {/* 1. OTÁČANÝ LIST */}
-
-              <OtocnaStrana
-                className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
-                prednaStrana={zobrazPrvuStranu && <Strana01 />}
-                zadnaStrana={<Strana01 typ="lava" />}
-              />
-
-              {/* 2. OTÁČANÝ LIST */}
-
-              <OtocnaStrana
-                className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
-                prednaStrana={zobrazStrany12 && <Strana02 />}
-                zadnaStrana={<Strana03 />}
-              />
-
-              {/* 3. OTÁČANÝ LIST */}
-
-              <OtocnaStrana
-                className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
-                prednaStrana={zobrazStrany34 && <Strana04 />}
-                zadnaStrana={<Strana05 />}
-              />
-
-              {/* 4. OTÁČANÝ LIST */}
-
-              <OtocnaStrana
-                className={`fourth-page ${otocenaStrana4 ? "turned" : ""}`}
-                prednaStrana={zobrazStrany56 && <Strana06 />}
-                zadnaStrana={<Strana07 />}
-              />
-
-              <Titulka jeOtvorena={jeOtvorena} />
             </div>
 
-            <Ovladanie
-              jeOtvorena={jeOtvorena}
-              zobrazTlacidla={zobrazTlacidla}
-              listujeSa={listujeSa}
-              otocenaStrana1={otocenaStrana1}
-              otocenaStrana2={otocenaStrana2}
-              otocenaStrana3={otocenaStrana3}
-              otocenaStrana4={otocenaStrana4}
-              otvorKnihu={otvorKnihu}
-              otocPrvuStranu={otocPrvuStranu}
-              otocDalsiuStranu={otocDalsiuStranu}
-              otocTretiuStranu={otocTretiuStranu}
-              otocStvrtuStranu={otocStvrtuStranu}
-              spat={spat}
-              odZnova={odZnova}
+            {/* 1. OTÁČANÝ LIST */}
+
+            <OtocnaStrana
+              className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
+              prednaStrana={zobrazPrvuStranu && <Strana01 />}
+              zadnaStrana={<Strana01 typ="lava" />}
             />
+
+            {/* 2. OTÁČANÝ LIST */}
+
+            <OtocnaStrana
+              className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
+              prednaStrana={zobrazStrany12 && <Strana02 />}
+              zadnaStrana={<Strana03 />}
+            />
+
+            {/* 3. OTÁČANÝ LIST */}
+
+            <OtocnaStrana
+              className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
+              prednaStrana={zobrazStrany34 && <Strana04 />}
+              zadnaStrana={<Strana05 />}
+            />
+
+            {/* 4. OTÁČANÝ LIST */}
+
+            <OtocnaStrana
+              className={`fourth-page ${otocenaStrana4 ? "turned" : ""}`}
+              prednaStrana={zobrazStrany56 && <Strana06 />}
+              zadnaStrana={<Strana07 />}
+            />
+
+            <Titulka jeOtvorena={jeOtvorena} />
           </div>
         </div>
+
+        <Ovladanie
+          jeOtvorena={jeOtvorena}
+          zobrazTlacidla={zobrazTlacidla}
+          listujeSa={listujeSa}
+          otocenaStrana1={otocenaStrana1}
+          otocenaStrana2={otocenaStrana2}
+          otocenaStrana3={otocenaStrana3}
+          otocenaStrana4={otocenaStrana4}
+          otvorKnihu={otvorKnihu}
+          otocPrvuStranu={otocPrvuStranu}
+          otocDalsiuStranu={otocDalsiuStranu}
+          otocTretiuStranu={otocTretiuStranu}
+          otocStvrtuStranu={otocStvrtuStranu}
+          spat={spat}
+          odZnova={odZnova}
+        />
       </div>
     </div>
   );
