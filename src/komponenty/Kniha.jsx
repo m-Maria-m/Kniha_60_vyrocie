@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import Titulka from "./Titulka";
 import OtocnaStrana from "./OtocnaStrana";
 import Ovladanie from "./Ovladanie";
@@ -11,376 +12,432 @@ import Strana05 from "../strany/Strana05";
 import Strana06 from "../strany/Strana06";
 import Strana07 from "../strany/Strana07";
 import Strana08 from "../strany/Strana08";
+import Strana09 from "../strany/Strana09";
+import Strana10 from "../strany/Strana10";
 
 export default function Kniha() {
-  const [jeOtvorena, setJeOtvorena] = useState(false);
-  const [zobrazPrvuStranu, setZobrazPrvuStranu] = useState(false);
+    const [jeOtvorena, setJeOtvorena] = useState(false);
+    const [zobrazPrvuStranu, setZobrazPrvuStranu] = useState(false);
 
-  const [otocenaStrana1, setOtocenaStrana1] = useState(false);
-  const [otocenaStrana2, setOtocenaStrana2] = useState(false);
-  const [otocenaStrana3, setOtocenaStrana3] = useState(false);
-  const [otocenaStrana4, setOtocenaStrana4] = useState(false);
+    const [otocenaStrana1, setOtocenaStrana1] = useState(false);
+    const [otocenaStrana2, setOtocenaStrana2] = useState(false);
+    const [otocenaStrana3, setOtocenaStrana3] = useState(false);
+    const [otocenaStrana4, setOtocenaStrana4] = useState(false);
+    const [otocenaStrana5, setOtocenaStrana5] = useState(false);
 
-  const [zobrazStrany12, setZobrazStrany12] = useState(false);
-  const [zobrazStrany34, setZobrazStrany34] = useState(false);
-  const [zobrazStrany56, setZobrazStrany56] = useState(false);
-  const [zobrazStrany78, setZobrazStrany78] = useState(false);
+    const [zobrazStrany12, setZobrazStrany12] = useState(false);
+    const [zobrazStrany34, setZobrazStrany34] = useState(false);
+    const [zobrazStrany56, setZobrazStrany56] = useState(false);
+    const [zobrazStrany78, setZobrazStrany78] = useState(false);
+    const [zobrazStrany910, setZobrazStrany910] = useState(false);
 
-  const [aktivnaDvojstrana, setAktivnaDvojstrana] = useState(0);
-  const [listujeSa, setListujeSa] = useState(false);
-  const [zobrazTlacidla, setZobrazTlacidla] = useState(false);
+    const [aktivnaDvojstrana, setAktivnaDvojstrana] = useState(0);
+    const [listujeSa, setListujeSa] = useState(false);
+    const [zobrazTlacidla, setZobrazTlacidla] = useState(false);
 
-  useEffect(() => {
-    if (!jeOtvorena) return;
+    useEffect(() => {
+        if (!jeOtvorena) return;
 
-    const t1 = setTimeout(() => {
-      setZobrazPrvuStranu(true);
-    }, 2600);
+        const t1 = setTimeout(() => {
+            setZobrazPrvuStranu(true);
+        }, 2600);
 
-    const t2 = setTimeout(() => {
-      setZobrazTlacidla(true);
-    }, 4200);
+        const t2 = setTimeout(() => {
+            setZobrazTlacidla(true);
+        }, 4200);
 
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
+        return () => {
+            clearTimeout(t1);
+            clearTimeout(t2);
+        };
+    }, [jeOtvorena]);
+
+    const otvorKnihu = () => {
+        if (listujeSa) return;
+
+        setJeOtvorena(true);
     };
-  }, [jeOtvorena]);
 
-  const otvorKnihu = () => {
-    if (listujeSa) return;
+    const otocPrvuStranu = () => {
+        if (listujeSa) return;
 
-    setJeOtvorena(true);
-  };
-
-  const otocPrvuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany12(true);
-    setAktivnaDvojstrana(1);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana1(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, 1400);
-  };
-
-  const otocDalsiuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany34(true);
-    setAktivnaDvojstrana(2);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana2(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, 1400);
-  };
-
-  const otocTretiuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany56(true);
-    setAktivnaDvojstrana(3);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana3(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, 1400);
-  };
-
-  const otocStvrtuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany78(true);
-    setAktivnaDvojstrana(4);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana4(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, 1400);
-  };
-
-  const spat = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-
-    if (otocenaStrana4) {
-      setOtocenaStrana4(false);
-
-      setTimeout(() => {
-        setZobrazStrany78(false);
-        setAktivnaDvojstrana(3);
-        setListujeSa(false);
-      }, 1400);
-
-      return;
-    }
-
-    if (otocenaStrana3) {
-      setOtocenaStrana3(false);
-
-      setTimeout(() => {
-        setZobrazStrany56(false);
-        setAktivnaDvojstrana(2);
-        setListujeSa(false);
-      }, 1400);
-
-      return;
-    }
-
-    if (otocenaStrana2) {
-      setOtocenaStrana2(false);
-
-      setTimeout(() => {
-        setZobrazStrany34(false);
+        setListujeSa(true);
+        setZobrazStrany12(true);
         setAktivnaDvojstrana(1);
-        setListujeSa(false);
-      }, 1400);
 
-      return;
-    }
+        requestAnimationFrame(() => {
+            setOtocenaStrana1(true);
+        });
 
-    if (otocenaStrana1) {
-      setOtocenaStrana1(false);
-
-      setTimeout(() => {
-        setZobrazStrany12(false);
-        setAktivnaDvojstrana(0);
-        setListujeSa(false);
-      }, 1400);
-    }
-  };
-
-  const odZnova = () => {
-    if (listujeSa) return;
-
-    setZobrazPrvuStranu(false);
-
-    setOtocenaStrana1(false);
-    setOtocenaStrana2(false);
-    setOtocenaStrana3(false);
-    setOtocenaStrana4(false);
-
-    setZobrazStrany12(false);
-    setZobrazStrany34(false);
-    setZobrazStrany56(false);
-    setZobrazStrany78(false);
-
-    setAktivnaDvojstrana(0);
-    setListujeSa(false);
-    setZobrazTlacidla(false);
-
-    setTimeout(() => {
-      setJeOtvorena(false);
-    }, 50);
-  };
-
-  useEffect(() => {
-    const jeFormularovyPrvok = (element) => {
-      const tag = element?.tagName?.toLowerCase();
-
-      return (
-        tag === "input" ||
-        tag === "textarea" ||
-        tag === "select" ||
-        element?.isContentEditable
-      );
+        setTimeout(() => {
+            setListujeSa(false);
+        }, 1400);
     };
 
-    const handleKeyDown = (event) => {
-      if (jeFormularovyPrvok(document.activeElement)) return;
-      if (document.querySelector(".zoom-overlay")) return;
-      if (listujeSa) return;
+    const otocDalsiuStranu = () => {
+        if (listujeSa) return;
 
-      if (!jeOtvorena && event.key === "Enter") {
-        event.preventDefault();
-        otvorKnihu();
-        return;
-      }
+        setListujeSa(true);
+        setZobrazStrany34(true);
+        setAktivnaDvojstrana(2);
 
-      if (!jeOtvorena) return;
+        requestAnimationFrame(() => {
+            setOtocenaStrana2(true);
+        });
 
-      if (event.key === "Home" || event.key.toLowerCase() === "r") {
-        event.preventDefault();
-        odZnova();
-        return;
-      }
+        setTimeout(() => {
+            setListujeSa(false);
+        }, 1400);
+    };
 
-      if (!zobrazTlacidla) return;
+    const otocTretiuStranu = () => {
+        if (listujeSa) return;
 
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
+        setListujeSa(true);
+        setZobrazStrany56(true);
+        setAktivnaDvojstrana(3);
 
-        if (!otocenaStrana1) {
-          otocPrvuStranu();
-          return;
+        requestAnimationFrame(() => {
+            setOtocenaStrana3(true);
+        });
+
+        setTimeout(() => {
+            setListujeSa(false);
+        }, 1400);
+    };
+
+    const otocStvrtuStranu = () => {
+        if (listujeSa) return;
+
+        setListujeSa(true);
+        setZobrazStrany78(true);
+        setAktivnaDvojstrana(4);
+
+        requestAnimationFrame(() => {
+            setOtocenaStrana4(true);
+        });
+
+        setTimeout(() => {
+            setListujeSa(false);
+        }, 1400);
+    };
+
+    const otocPiatuStranu = () => {
+        if (listujeSa) return;
+
+        setListujeSa(true);
+        setZobrazStrany910(true);
+        setAktivnaDvojstrana(5);
+
+        requestAnimationFrame(() => {
+            setOtocenaStrana5(true);
+        });
+
+        setTimeout(() => {
+            setListujeSa(false);
+        }, 1400);
+    };
+
+    const spat = () => {
+        if (listujeSa) return;
+
+        setListujeSa(true);
+
+        if (otocenaStrana5) {
+            setOtocenaStrana5(false);
+
+            setTimeout(() => {
+                setZobrazStrany910(false);
+                setAktivnaDvojstrana(4);
+                setListujeSa(false);
+            }, 1400);
+
+            return;
         }
 
-        if (!otocenaStrana2) {
-          otocDalsiuStranu();
-          return;
+        if (otocenaStrana4) {
+            setOtocenaStrana4(false);
+
+            setTimeout(() => {
+                setZobrazStrany78(false);
+                setAktivnaDvojstrana(3);
+                setListujeSa(false);
+            }, 1400);
+
+            return;
         }
 
-        if (!otocenaStrana3) {
-          otocTretiuStranu();
-          return;
+        if (otocenaStrana3) {
+            setOtocenaStrana3(false);
+
+            setTimeout(() => {
+                setZobrazStrany56(false);
+                setAktivnaDvojstrana(2);
+                setListujeSa(false);
+            }, 1400);
+
+            return;
         }
 
-        if (!otocenaStrana4) {
-          otocStvrtuStranu();
+        if (otocenaStrana2) {
+            setOtocenaStrana2(false);
+
+            setTimeout(() => {
+                setZobrazStrany34(false);
+                setAktivnaDvojstrana(1);
+                setListujeSa(false);
+            }, 1400);
+
+            return;
         }
-
-        return;
-      }
-
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
 
         if (otocenaStrana1) {
-          spat();
+            setOtocenaStrana1(false);
+
+            setTimeout(() => {
+                setZobrazStrany12(false);
+                setAktivnaDvojstrana(0);
+                setListujeSa(false);
+            }, 1400);
         }
-      }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    const odZnova = () => {
+        if (listujeSa) return;
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+        setZobrazPrvuStranu(false);
+
+        setOtocenaStrana1(false);
+        setOtocenaStrana2(false);
+        setOtocenaStrana3(false);
+        setOtocenaStrana4(false);
+        setOtocenaStrana5(false);
+
+        setZobrazStrany12(false);
+        setZobrazStrany34(false);
+        setZobrazStrany56(false);
+        setZobrazStrany78(false);
+        setZobrazStrany910(false);
+
+        setAktivnaDvojstrana(0);
+        setListujeSa(false);
+        setZobrazTlacidla(false);
+
+        setTimeout(() => {
+            setJeOtvorena(false);
+        }, 50);
     };
-  });
 
-  return (
-    <div className="my-app-wrapper">
-      <div className="ambient-light"></div>
+    useEffect(() => {
+        const jeFormularovyPrvok = (element) => {
+            const tag = element?.tagName?.toLowerCase();
 
-      <div className="main-content-wrapper">
-        <div className="book-scene">
-          <div className={`book-container ${jeOtvorena ? "open" : "closed"}`}>
-            {/* ČÍSLA STRÁN */}
+            return (
+                tag === "input" ||
+                tag === "textarea" ||
+                tag === "select" ||
+                element?.isContentEditable
+            );
+        };
 
-            {!listujeSa && aktivnaDvojstrana === 1 && (
-              <>
-                <div className="cislo-knihy cislo-lave">2</div>
-                <div className="cislo-knihy cislo-prave">3</div>
-              </>
-            )}
+        const handleKeyDown = (event) => {
+            if (jeFormularovyPrvok(document.activeElement)) return;
+            if (document.querySelector(".zoom-overlay")) return;
+            if (listujeSa) return;
 
-            {!listujeSa && aktivnaDvojstrana === 2 && (
-              <>
-                <div className="cislo-knihy cislo-lave">4</div>
-                <div className="cislo-knihy cislo-prave">5</div>
-              </>
-            )}
+            if (!jeOtvorena && event.key === "Enter") {
+                event.preventDefault();
+                otvorKnihu();
+                return;
+            }
 
-            {!listujeSa && aktivnaDvojstrana === 3 && (
-              <>
-                <div className="cislo-knihy cislo-lave">6</div>
-                <div className="cislo-knihy cislo-prave">7</div>
-              </>
-            )}
+            if (!jeOtvorena) return;
 
-            {!listujeSa && aktivnaDvojstrana === 4 && (
-              <>
-                <div className="cislo-knihy cislo-lave">8</div>
-                <div className="cislo-knihy cislo-prave">9</div>
-              </>
-            )}
+            if (event.key === "Home" || event.key.toLowerCase() === "r") {
+                event.preventDefault();
+                odZnova();
+                return;
+            }
 
-            {/* PRAVÁ PEVNÁ STRANA POD OTÁČAJÚCIM SA LISTOM */}
+            if (!zobrazTlacidla) return;
 
-            <div className="book-half book-right">
-              <div className="book-cover-back"></div>
-              <div className="fake-pages"></div>
+            if (event.key === "ArrowRight") {
+                event.preventDefault();
 
-              <div className="book-page right-page base-page">
-                <div className="nice-text-container">
-                  {zobrazStrany78 && <Strana08 />}
+                if (!otocenaStrana1) {
+                    otocPrvuStranu();
+                    return;
+                }
 
-                  {zobrazStrany56 && !zobrazStrany78 && <Strana06 />}
+                if (!otocenaStrana2) {
+                    otocDalsiuStranu();
+                    return;
+                }
 
-                  {zobrazStrany34 && !zobrazStrany56 && !zobrazStrany78 && (
-                    <Strana04 />
-                  )}
+                if (!otocenaStrana3) {
+                    otocTretiuStranu();
+                    return;
+                }
 
-                  {zobrazStrany12 &&
-                    !zobrazStrany34 &&
-                    !zobrazStrany56 &&
-                    !zobrazStrany78 && <Strana02 />}
+                if (!otocenaStrana4) {
+                    otocStvrtuStranu();
+                    return;
+                }
+
+                if (!otocenaStrana5) {
+                    otocPiatuStranu();
+                    return;
+                }
+
+                return;
+            }
+
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+
+                if (otocenaStrana1) {
+                    spat();
+                }
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    });
+
+    return (
+        <div className="my-app-wrapper">
+            <div className="ambient-light"></div>
+
+            <div className="main-content-wrapper">
+                <div className="book-scene">
+                    <div className={`book-container ${jeOtvorena ? "open" : "closed"}`}>
+                        {/* ČÍSLA STRÁN */}
+                        {!listujeSa && aktivnaDvojstrana === 1 && (
+                            <>
+                                <div className="cislo-knihy cislo-lave">2</div>
+                                <div className="cislo-knihy cislo-prave">3</div>
+                            </>
+                        )}
+
+                        {!listujeSa && aktivnaDvojstrana === 2 && (
+                            <>
+                                <div className="cislo-knihy cislo-lave">4</div>
+                                <div className="cislo-knihy cislo-prave">5</div>
+                            </>
+                        )}
+
+                        {!listujeSa && aktivnaDvojstrana === 3 && (
+                            <>
+                                <div className="cislo-knihy cislo-lave">6</div>
+                                <div className="cislo-knihy cislo-prave">7</div>
+                            </>
+                        )}
+
+                        {!listujeSa && aktivnaDvojstrana === 4 && (
+                            <>
+                                <div className="cislo-knihy cislo-lave">8</div>
+                                <div className="cislo-knihy cislo-prave">9</div>
+                            </>
+                        )}
+
+                        {!listujeSa && aktivnaDvojstrana === 5 && (
+                            <>
+                                <div className="cislo-knihy cislo-lave">10</div>
+                                <div className="cislo-knihy cislo-prave">11</div>
+                            </>
+                        )}
+
+                        {/* PRAVÁ PEVNÁ STRANA POD OTÁČAJÚCIM SA LISTOM */}
+                        <div className="book-half book-right">
+                            <div className="book-cover-back"></div>
+                            <div className="fake-pages"></div>
+
+                            <div className="book-page right-page base-page">
+                                <div className="nice-text-container">
+                                    {zobrazStrany910 && <Strana10 />}
+
+                                    {zobrazStrany78 && !zobrazStrany910 && <Strana08 />}
+
+                                    {zobrazStrany56 &&
+                                        !zobrazStrany78 &&
+                                        !zobrazStrany910 && <Strana06 />}
+
+                                    {zobrazStrany34 &&
+                                        !zobrazStrany56 &&
+                                        !zobrazStrany78 &&
+                                        !zobrazStrany910 && <Strana04 />}
+
+                                    {zobrazStrany12 &&
+                                        !zobrazStrany34 &&
+                                        !zobrazStrany56 &&
+                                        !zobrazStrany78 &&
+                                        !zobrazStrany910 && <Strana02 />}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 1. OTÁČANÝ LIST */}
+                        <OtocnaStrana
+                            className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
+                            prednaStrana={zobrazPrvuStranu && <Strana01 />}
+                            zadnaStrana={<Strana01 typ="lava" />}
+                        />
+
+                        {/* 2. OTÁČANÝ LIST */}
+                        <OtocnaStrana
+                            className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
+                            prednaStrana={zobrazStrany12 && <Strana02 />}
+                            zadnaStrana={<Strana03 />}
+                        />
+
+                        {/* 3. OTÁČANÝ LIST */}
+                        <OtocnaStrana
+                            className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
+                            prednaStrana={zobrazStrany34 && <Strana04 />}
+                            zadnaStrana={<Strana05 />}
+                        />
+
+                        {/* 4. OTÁČANÝ LIST */}
+                        <OtocnaStrana
+                            className={`fourth-page ${otocenaStrana4 ? "turned" : ""}`}
+                            prednaStrana={zobrazStrany56 && <Strana06 />}
+                            zadnaStrana={<Strana07 />}
+                        />
+
+                        {/* 5. OTÁČANÝ LIST */}
+                        <OtocnaStrana
+                            className={`fifth-page ${otocenaStrana5 ? "turned" : ""}`}
+                            prednaStrana={zobrazStrany78 && <Strana08 />}
+                            zadnaStrana={<Strana09 />}
+                        />
+
+                        <Titulka jeOtvorena={jeOtvorena} />
+                    </div>
                 </div>
-              </div>
+
+                <Ovladanie
+                    jeOtvorena={jeOtvorena}
+                    zobrazTlacidla={zobrazTlacidla}
+                    listujeSa={listujeSa}
+                    otocenaStrana1={otocenaStrana1}
+                    otocenaStrana2={otocenaStrana2}
+                    otocenaStrana3={otocenaStrana3}
+                    otocenaStrana4={otocenaStrana4}
+                    otocenaStrana5={otocenaStrana5}
+                    otvorKnihu={otvorKnihu}
+                    otocPrvuStranu={otocPrvuStranu}
+                    otocDalsiuStranu={otocDalsiuStranu}
+                    otocTretiuStranu={otocTretiuStranu}
+                    otocStvrtuStranu={otocStvrtuStranu}
+                    otocPiatuStranu={otocPiatuStranu}
+                    spat={spat}
+                    odZnova={odZnova}
+                />
             </div>
-
-            {/* 1. OTÁČANÝ LIST */}
-
-            <OtocnaStrana
-              className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
-              prednaStrana={zobrazPrvuStranu && <Strana01 />}
-              zadnaStrana={<Strana01 typ="lava" />}
-            />
-
-            {/* 2. OTÁČANÝ LIST */}
-
-            <OtocnaStrana
-              className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany12 && <Strana02 />}
-              zadnaStrana={<Strana03 />}
-            />
-
-            {/* 3. OTÁČANÝ LIST */}
-
-            <OtocnaStrana
-              className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany34 && <Strana04 />}
-              zadnaStrana={<Strana05 />}
-            />
-
-            {/* 4. OTÁČANÝ LIST */}
-
-            <OtocnaStrana
-              className={`fourth-page ${otocenaStrana4 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany56 && <Strana06 />}
-              zadnaStrana={<Strana07 />}
-            />
-
-            <Titulka jeOtvorena={jeOtvorena} />
-          </div>
         </div>
-
-        <Ovladanie
-          jeOtvorena={jeOtvorena}
-          zobrazTlacidla={zobrazTlacidla}
-          listujeSa={listujeSa}
-          otocenaStrana1={otocenaStrana1}
-          otocenaStrana2={otocenaStrana2}
-          otocenaStrana3={otocenaStrana3}
-          otocenaStrana4={otocenaStrana4}
-          otvorKnihu={otvorKnihu}
-          otocPrvuStranu={otocPrvuStranu}
-          otocDalsiuStranu={otocDalsiuStranu}
-          otocTretiuStranu={otocTretiuStranu}
-          otocStvrtuStranu={otocStvrtuStranu}
-          spat={spat}
-          odZnova={odZnova}
-        />
-      </div>
-    </div>
-  );
+    );
 }

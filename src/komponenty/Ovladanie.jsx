@@ -6,38 +6,46 @@ export default function Ovladanie({
                                       otocenaStrana2,
                                       otocenaStrana3,
                                       otocenaStrana4,
+                                      otocenaStrana5,
                                       otvorKnihu,
                                       otocPrvuStranu,
                                       otocDalsiuStranu,
                                       otocTretiuStranu,
                                       otocStvrtuStranu,
+                                      otocPiatuStranu,
                                       spat,
                                       odZnova,
                                   }) {
     const chodDopredu = () => {
-        if (listujeSa) return;
+    if (listujeSa) return;
 
-        if (!otocenaStrana1) {
-            otocPrvuStranu();
-            return;
-        }
+    if (!otocenaStrana1) {
+        otocPrvuStranu();
+        return;
+    }
 
-        if (!otocenaStrana2) {
-            otocDalsiuStranu();
-            return;
-        }
+    if (!otocenaStrana2) {
+        otocDalsiuStranu();
+        return;
+    }
 
-        if (!otocenaStrana3) {
-            otocTretiuStranu();
-            return;
-        }
+    if (!otocenaStrana3) {
+        otocTretiuStranu();
+        return;
+    }
 
-        if (!otocenaStrana4) {
-            otocStvrtuStranu();
-        }
-    };
+    if (!otocenaStrana4) {
+        otocStvrtuStranu();
+        return;
+    }
 
-    const mozemIstDopredu = jeOtvorena && zobrazTlacidla && !otocenaStrana4;
+    if (!otocenaStrana5) {
+        otocPiatuStranu();
+        return;
+    }
+};
+
+    const mozemIstDopredu = jeOtvorena && zobrazTlacidla && !otocenaStrana5;
     const mozemIstSpat = jeOtvorena && otocenaStrana1;
 
     return (

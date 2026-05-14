@@ -192,3 +192,10 @@
 .cislo-prave {
   right: 25px;
 }
+.fifth-page {
+    z-index: 6;
+}
+
+.fifth-page.turned {
+    z-index: 80;
+}
