@@ -15,9 +15,9 @@ import Strana08 from "../strany/Strana08";
 import Strana09 from "../strany/Strana09";
 import Strana10 from "../strany/Strana10";
 import Strana11 from "../strany/Strana11";
-import Strana12 from "../strany/Strana12";
-import Strana13 from "../strany/Strana13";
-import Strana14 from "../strany/Strana14";
+import Strana12 from "../strany/Strana12.jsx";
+import Strana13 from "../strany/Strana13.jsx";
+import Strana14 from "../strany/Strana14.jsx";
 
 const TRVANIE_LISTOVANIA = 1400;
 
