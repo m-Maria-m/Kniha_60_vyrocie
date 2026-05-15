@@ -214,3 +214,6 @@
 .seventh-page.turned {
   z-index: 100;
 }
+.flipping-page.turning-back {
+  z-index: 130 !important;
+}

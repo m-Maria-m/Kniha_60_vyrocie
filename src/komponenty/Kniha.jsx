@@ -15,15 +15,73 @@ import Strana08 from "../strany/Strana08";
 import Strana09 from "../strany/Strana09";
 import Strana10 from "../strany/Strana10";
 import Strana11 from "../strany/Strana11";
-import Strana12 from "../strany/Strana12.jsx";
-import Strana13 from "../strany/Strana13.jsx";
-import Strana14 from "../strany/Strana14.jsx";
+import Strana12 from "../strany/Strana12";
+import Strana13 from "../strany/Strana13";
+import Strana14 from "../strany/Strana14";
+
+import titulokObrazok from "../assets/titulok.png";
+import logoObrazok from "../assets/5ZS_logo.png";
+
+import strana01Obrazok from "../assets/strana01.png";
+import strana02Obrazok from "../assets/strana02.png";
+import strana03Obrazok from "../assets/strana03.png";
+import strana04Obrazok from "../assets/strana04.png";
+import strana05Obrazok from "../assets/strana05.png";
+
+import prazdnaStranaObrazok from "../assets/prazdna-strana.png";
+import strana12Obrazok from "../assets/strana12.png";
+import strana14Obrazok from "../assets/strana14.png";
 
 const TRVANIE_LISTOVANIA = 1400;
 
+const OBRAZKY_KNIHY = [
+  titulokObrazok,
+  logoObrazok,
+  strana01Obrazok,
+  strana02Obrazok,
+  strana03Obrazok,
+  strana04Obrazok,
+  strana05Obrazok,
+  prazdnaStranaObrazok,
+  strana12Obrazok,
+  strana14Obrazok,
+];
+
+const nacitajObrazok = (src) => {
+  return new Promise((resolve) => {
+    if (!src || typeof window === "undefined") {
+      resolve();
+      return;
+    }
+
+    const img = new Image();
+
+    img.loading = "eager";
+    img.decoding = "async";
+    img.fetchPriority = "high";
+
+    img.onload = () => {
+      if (img.decode) {
+        img.decode().then(resolve).catch(resolve);
+        return;
+      }
+
+      resolve();
+    };
+
+    img.onerror = resolve;
+    img.src = src;
+
+    if (!window.__knihaPrednacitaneObrazky) {
+      window.__knihaPrednacitaneObrazky = [];
+    }
+
+    window.__knihaPrednacitaneObrazky.push(img);
+  });
+};
+
 export default function Kniha() {
   const [jeOtvorena, setJeOtvorena] = useState(false);
-  const [zobrazPrvuStranu, setZobrazPrvuStranu] = useState(false);
 
   const [otocenaStrana1, setOtocenaStrana1] = useState(false);
   const [otocenaStrana2, setOtocenaStrana2] = useState(false);
@@ -33,159 +91,87 @@ export default function Kniha() {
   const [otocenaStrana6, setOtocenaStrana6] = useState(false);
   const [otocenaStrana7, setOtocenaStrana7] = useState(false);
 
-  const [zobrazStrany12, setZobrazStrany12] = useState(false);
-  const [zobrazStrany34, setZobrazStrany34] = useState(false);
-  const [zobrazStrany56, setZobrazStrany56] = useState(false);
-  const [zobrazStrany78, setZobrazStrany78] = useState(false);
-  const [zobrazStrany910, setZobrazStrany910] = useState(false);
-  const [zobrazStrany1112, setZobrazStrany1112] = useState(false);
-  const [zobrazStrany1314, setZobrazStrany1314] = useState(false);
-
   const [aktivnaDvojstrana, setAktivnaDvojstrana] = useState(0);
   const [listujeSa, setListujeSa] = useState(false);
   const [zobrazTlacidla, setZobrazTlacidla] = useState(false);
+  const [obrazkyPripravene, setObrazkyPripravene] = useState(false);
+  const [vracanyList, setVracanyList] = useState(null);
+
+  useEffect(() => {
+    let zrusene = false;
+
+    Promise.all(OBRAZKY_KNIHY.map(nacitajObrazok)).then(() => {
+      if (!zrusene) {
+        setObrazkyPripravene(true);
+      }
+    });
+
+    return () => {
+      zrusene = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!jeOtvorena) return;
 
-    const t1 = setTimeout(() => {
-      setZobrazPrvuStranu(true);
-    }, 2600);
-
-    const t2 = setTimeout(() => {
+    const timer = setTimeout(() => {
       setZobrazTlacidla(true);
     }, 4200);
 
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
+      clearTimeout(timer);
     };
   }, [jeOtvorena]);
 
   const otvorKnihu = () => {
-    if (listujeSa) return;
+    if (listujeSa || !obrazkyPripravene) return;
 
     setJeOtvorena(true);
   };
 
-  const otocPrvuStranu = () => {
-    if (listujeSa) return;
+  const zacniListovanieDopredu = (nastavOtocenuStranu, cisloDvojstrany) => {
+    if (listujeSa || !obrazkyPripravene) return;
 
     setListujeSa(true);
-    setZobrazStrany12(true);
-    setAktivnaDvojstrana(1);
+    setAktivnaDvojstrana(cisloDvojstrany);
 
     requestAnimationFrame(() => {
-      setOtocenaStrana1(true);
+      nastavOtocenuStranu(true);
     });
 
     setTimeout(() => {
       setListujeSa(false);
     }, TRVANIE_LISTOVANIA);
+  };
+
+  const otocPrvuStranu = () => {
+    zacniListovanieDopredu(setOtocenaStrana1, 1);
   };
 
   const otocDalsiuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany34(true);
-    setAktivnaDvojstrana(2);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana2(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, TRVANIE_LISTOVANIA);
+    zacniListovanieDopredu(setOtocenaStrana2, 2);
   };
 
   const otocTretiuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany56(true);
-    setAktivnaDvojstrana(3);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana3(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, TRVANIE_LISTOVANIA);
+    zacniListovanieDopredu(setOtocenaStrana3, 3);
   };
 
   const otocStvrtuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany78(true);
-    setAktivnaDvojstrana(4);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana4(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, TRVANIE_LISTOVANIA);
+    zacniListovanieDopredu(setOtocenaStrana4, 4);
   };
 
   const otocPiatuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany910(true);
-    setAktivnaDvojstrana(5);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana5(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, TRVANIE_LISTOVANIA);
+    zacniListovanieDopredu(setOtocenaStrana5, 5);
   };
 
   const otocSiestuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany1112(true);
-    setAktivnaDvojstrana(6);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana6(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, TRVANIE_LISTOVANIA);
+    zacniListovanieDopredu(setOtocenaStrana6, 6);
   };
 
   const otocSiedmuStranu = () => {
-    if (listujeSa) return;
-
-    setListujeSa(true);
-    setZobrazStrany1314(true);
-    setAktivnaDvojstrana(7);
-
-    requestAnimationFrame(() => {
-      setOtocenaStrana7(true);
-    });
-
-    setTimeout(() => {
-      setListujeSa(false);
-    }, TRVANIE_LISTOVANIA);
+    zacniListovanieDopredu(setOtocenaStrana7, 7);
   };
 
-  /*
-    Toto je mostík pre aktuálne Ovladanie.jsx.
-    Ovladanie zatiaľ pozná iba "otocPiatuStranu",
-    preto mu nižšie pošleme túto funkciu, ktorá vie pokračovať
-    cez 5., 6. aj 7. list.
-  */
   const otocPiatyAleboDalsiList = () => {
     if (!otocenaStrana5) {
       otocPiatuStranu();
@@ -202,98 +188,65 @@ export default function Kniha() {
     }
   };
 
+  const dokonciListovanieSpat = (callback) => {
+    setTimeout(() => {
+      callback();
+      setVracanyList(null);
+      setListujeSa(false);
+    }, TRVANIE_LISTOVANIA);
+  };
+
+  const vratListSpat = (cisloListu, nastavOtocenuStranu, predoslaDvojstrana) => {
+    setVracanyList(cisloListu);
+    nastavOtocenuStranu(false);
+
+    dokonciListovanieSpat(() => {
+      setAktivnaDvojstrana(predoslaDvojstrana);
+    });
+  };
+
   const spat = () => {
     if (listujeSa) return;
 
     setListujeSa(true);
 
     if (otocenaStrana7) {
-      setOtocenaStrana7(false);
-
-      setTimeout(() => {
-        setZobrazStrany1314(false);
-        setAktivnaDvojstrana(6);
-        setListujeSa(false);
-      }, TRVANIE_LISTOVANIA);
-
+      vratListSpat(7, setOtocenaStrana7, 6);
       return;
     }
 
     if (otocenaStrana6) {
-      setOtocenaStrana6(false);
-
-      setTimeout(() => {
-        setZobrazStrany1112(false);
-        setAktivnaDvojstrana(5);
-        setListujeSa(false);
-      }, TRVANIE_LISTOVANIA);
-
+      vratListSpat(6, setOtocenaStrana6, 5);
       return;
     }
 
     if (otocenaStrana5) {
-      setOtocenaStrana5(false);
-
-      setTimeout(() => {
-        setZobrazStrany910(false);
-        setAktivnaDvojstrana(4);
-        setListujeSa(false);
-      }, TRVANIE_LISTOVANIA);
-
+      vratListSpat(5, setOtocenaStrana5, 4);
       return;
     }
 
     if (otocenaStrana4) {
-      setOtocenaStrana4(false);
-
-      setTimeout(() => {
-        setZobrazStrany78(false);
-        setAktivnaDvojstrana(3);
-        setListujeSa(false);
-      }, TRVANIE_LISTOVANIA);
-
+      vratListSpat(4, setOtocenaStrana4, 3);
       return;
     }
 
     if (otocenaStrana3) {
-      setOtocenaStrana3(false);
-
-      setTimeout(() => {
-        setZobrazStrany56(false);
-        setAktivnaDvojstrana(2);
-        setListujeSa(false);
-      }, TRVANIE_LISTOVANIA);
-
+      vratListSpat(3, setOtocenaStrana3, 2);
       return;
     }
 
     if (otocenaStrana2) {
-      setOtocenaStrana2(false);
-
-      setTimeout(() => {
-        setZobrazStrany34(false);
-        setAktivnaDvojstrana(1);
-        setListujeSa(false);
-      }, TRVANIE_LISTOVANIA);
-
+      vratListSpat(2, setOtocenaStrana2, 1);
       return;
     }
 
     if (otocenaStrana1) {
-      setOtocenaStrana1(false);
-
-      setTimeout(() => {
-        setZobrazStrany12(false);
-        setAktivnaDvojstrana(0);
-        setListujeSa(false);
-      }, TRVANIE_LISTOVANIA);
+      vratListSpat(1, setOtocenaStrana1, 0);
     }
   };
 
   const odZnova = () => {
     if (listujeSa) return;
-
-    setZobrazPrvuStranu(false);
 
     setOtocenaStrana1(false);
     setOtocenaStrana2(false);
@@ -303,16 +256,9 @@ export default function Kniha() {
     setOtocenaStrana6(false);
     setOtocenaStrana7(false);
 
-    setZobrazStrany12(false);
-    setZobrazStrany34(false);
-    setZobrazStrany56(false);
-    setZobrazStrany78(false);
-    setZobrazStrany910(false);
-    setZobrazStrany1112(false);
-    setZobrazStrany1314(false);
-
     setAktivnaDvojstrana(0);
     setListujeSa(false);
+    setVracanyList(null);
     setZobrazTlacidla(false);
 
     setTimeout(() => {
@@ -409,6 +355,24 @@ export default function Kniha() {
     };
   });
 
+  const triedaListu = (zakladnaTrieda, jeOtocena, cisloListu) => {
+    return `${zakladnaTrieda} ${jeOtocena ? "turned" : ""} ${
+      vracanyList === cisloListu ? "turning-back" : ""
+    }`;
+  };
+
+  const pravaPevnaStrana = () => {
+    if (aktivnaDvojstrana === 7) return <Strana14 />;
+    if (aktivnaDvojstrana === 6) return <Strana12 />;
+    if (aktivnaDvojstrana === 5) return <Strana10 />;
+    if (aktivnaDvojstrana === 4) return <Strana08 />;
+    if (aktivnaDvojstrana === 3) return <Strana06 />;
+    if (aktivnaDvojstrana === 2) return <Strana04 />;
+    if (aktivnaDvojstrana === 1) return <Strana02 />;
+
+    return null;
+  };
+
   return (
     <div className="my-app-wrapper">
       <div className="ambient-light"></div>
@@ -473,90 +437,57 @@ export default function Kniha() {
 
               <div className="book-page right-page base-page">
                 <div className="nice-text-container">
-                  {zobrazStrany1314 && <Strana14 />}
-
-                  {zobrazStrany1112 &&
-                    !zobrazStrany1314 && <Strana12 />}
-
-                  {zobrazStrany910 &&
-                    !zobrazStrany1112 &&
-                    !zobrazStrany1314 && <Strana10 />}
-
-                  {zobrazStrany78 &&
-                    !zobrazStrany910 &&
-                    !zobrazStrany1112 &&
-                    !zobrazStrany1314 && <Strana08 />}
-
-                  {zobrazStrany56 &&
-                    !zobrazStrany78 &&
-                    !zobrazStrany910 &&
-                    !zobrazStrany1112 &&
-                    !zobrazStrany1314 && <Strana06 />}
-
-                  {zobrazStrany34 &&
-                    !zobrazStrany56 &&
-                    !zobrazStrany78 &&
-                    !zobrazStrany910 &&
-                    !zobrazStrany1112 &&
-                    !zobrazStrany1314 && <Strana04 />}
-
-                  {zobrazStrany12 &&
-                    !zobrazStrany34 &&
-                    !zobrazStrany56 &&
-                    !zobrazStrany78 &&
-                    !zobrazStrany910 &&
-                    !zobrazStrany1112 &&
-                    !zobrazStrany1314 && <Strana02 />}
+                  {pravaPevnaStrana()}
                 </div>
               </div>
             </div>
 
             {/* 1. OTÁČANÝ LIST */}
             <OtocnaStrana
-              className={`first-page ${otocenaStrana1 ? "turned" : ""}`}
-              prednaStrana={zobrazPrvuStranu && <Strana01 />}
+              className={triedaListu("first-page", otocenaStrana1, 1)}
+              prednaStrana={<Strana01 />}
               zadnaStrana={<Strana01 typ="lava" />}
             />
 
             {/* 2. OTÁČANÝ LIST */}
             <OtocnaStrana
-              className={`second-page ${otocenaStrana2 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany12 && <Strana02 />}
+              className={triedaListu("second-page", otocenaStrana2, 2)}
+              prednaStrana={<Strana02 />}
               zadnaStrana={<Strana03 />}
             />
 
             {/* 3. OTÁČANÝ LIST */}
             <OtocnaStrana
-              className={`third-page ${otocenaStrana3 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany34 && <Strana04 />}
+              className={triedaListu("third-page", otocenaStrana3, 3)}
+              prednaStrana={<Strana04 />}
               zadnaStrana={<Strana05 />}
             />
 
             {/* 4. OTÁČANÝ LIST */}
             <OtocnaStrana
-              className={`fourth-page ${otocenaStrana4 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany56 && <Strana06 />}
+              className={triedaListu("fourth-page", otocenaStrana4, 4)}
+              prednaStrana={<Strana06 />}
               zadnaStrana={<Strana07 />}
             />
 
             {/* 5. OTÁČANÝ LIST */}
             <OtocnaStrana
-              className={`fifth-page ${otocenaStrana5 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany78 && <Strana08 />}
+              className={triedaListu("fifth-page", otocenaStrana5, 5)}
+              prednaStrana={<Strana08 />}
               zadnaStrana={<Strana09 />}
             />
 
             {/* 6. OTÁČANÝ LIST */}
             <OtocnaStrana
-              className={`sixth-page ${otocenaStrana6 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany910 && <Strana10 />}
+              className={triedaListu("sixth-page", otocenaStrana6, 6)}
+              prednaStrana={<Strana10 />}
               zadnaStrana={<Strana11 />}
             />
 
             {/* 7. OTÁČANÝ LIST */}
             <OtocnaStrana
-              className={`seventh-page ${otocenaStrana7 ? "turned" : ""}`}
-              prednaStrana={zobrazStrany1112 && <Strana12 />}
+              className={triedaListu("seventh-page", otocenaStrana7, 7)}
+              prednaStrana={<Strana12 />}
               zadnaStrana={<Strana13 />}
             />
 
@@ -567,34 +498,18 @@ export default function Kniha() {
         <Ovladanie
           jeOtvorena={jeOtvorena}
           zobrazTlacidla={zobrazTlacidla}
-          listujeSa={listujeSa}
+          listujeSa={listujeSa || !obrazkyPripravene}
           otocenaStrana1={otocenaStrana1}
           otocenaStrana2={otocenaStrana2}
           otocenaStrana3={otocenaStrana3}
           otocenaStrana4={otocenaStrana4}
-
-          /*
-            Dôležité:
-            Ovladanie.jsx zatiaľ kontroluje iba otocenaStrana5.
-            Preto mu sem posielame otocenaStrana7,
-            aby šípka dopredu nezmizla po 5. liste,
-            ale až po 7. liste.
-          */
           otocenaStrana5={otocenaStrana7}
-
           otvorKnihu={otvorKnihu}
           otocPrvuStranu={otocPrvuStranu}
           otocDalsiuStranu={otocDalsiuStranu}
           otocTretiuStranu={otocTretiuStranu}
           otocStvrtuStranu={otocStvrtuStranu}
-
-          /*
-            Dôležité:
-            Namiesto pôvodnej piatej funkcie posielame funkciu,
-            ktorá vie pokračovať aj na 6. a 7. list.
-          */
           otocPiatuStranu={otocPiatyAleboDalsiList}
-
           spat={spat}
           odZnova={odZnova}
         />
