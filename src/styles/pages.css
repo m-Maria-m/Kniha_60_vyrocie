@@ -199,3 +199,18 @@
 .fifth-page.turned {
     z-index: 80;
 }
+.sixth-page {
+  z-index: 4;
+}
+
+.sixth-page.turned {
+  z-index: 90;
+}
+
+.seventh-page {
+  z-index: 2;
+}
+
+.seventh-page.turned {
+  z-index: 100;
+}

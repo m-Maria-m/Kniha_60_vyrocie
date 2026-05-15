@@ -1,13 +1,16 @@
 import ZoomObrazok from "../komponenty/ZoomObrazok.jsx";
-import strana10Obrazok from "../assets/strana10.png";
-export default function Strana09() {
-  return (
-      <div className="strana-cely-obrazok-wrap">
-          <ZoomObrazok
-              src={strana10Obrazok}
-              alt="Strana 10"
-              className="strana-cely-obrazok strana-prava"
-          />
-      </div>
-  );
+import stranaPrazdnaObrazok from "../assets/prazdna-strana.png";
+
+export default function Strana10() {
+    return (
+        <div className="strana-cely-obrazok-wrap">
+            <ZoomObrazok
+                src={stranaPrazdnaObrazok}
+                alt="Strana 10 - docastny"
+                loading="eager"
+                decoding="async"
+                className="strana-cely-obrazok strana-prava"
+            />
+        </div>
+    );
 }
