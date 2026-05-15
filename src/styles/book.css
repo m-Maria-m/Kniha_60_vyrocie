@@ -123,9 +123,9 @@
       rgba(0, 0, 0, 0.05) 100%
     ),
     #efe2c2;
-  box-shadow:
-    -6px 0 14px rgba(0, 0, 0, 0.12),
-    inset 2px 0 6px rgba(255, 255, 255, 0.75);
+
+  box-shadow: inset 2px 0 6px rgba(255, 255, 255, 0.75);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,6 +133,7 @@
   overflow: hidden;
   padding-top: 70px;
 }
+
 
 .flipping-page .face-front {
   transform: rotateY(0deg);
@@ -217,4 +218,8 @@
   width: 100%;
   height: 100%;
   max-width: none;
+}
+
+.flipping-page {
+  will-change: transform;
 }
