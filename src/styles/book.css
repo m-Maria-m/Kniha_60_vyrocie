@@ -200,7 +200,7 @@
     );
   border-radius: 2px;
   box-shadow:
-    inset 1px 0 2px rgba(255, 255, 255, 0.35),
+    inset 1px 0 2px rgb(197, 174, 137),
     inset -1px 0 3px rgba(0, 0, 0, 0.12);
   z-index: 2;
 }
