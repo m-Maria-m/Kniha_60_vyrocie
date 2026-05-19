@@ -1,25 +1,16 @@
-import { PadajuciText, PadajuceSlova } from "../komponenty/PadajuciText";
+import strana07Obrazok from "../assets/strana07.png";
+import ZoomObrazok from "../komponenty/ZoomObrazok.jsx";
 
 export default function Strana07() {
-  return (
-      <div className="nice-text-container">
-          <PadajuciText
-              text="Ďalšia kapitola 2"
-              delay={0.5}
-              delayStep={0.06}
-              className="nice-title"
-          />
-
-          <div
-              className="divider-small fade-in-delayed"
-              style={{animationDelay: "1.5s"}}
-          ></div>
-
-          <PadajuceSlova
-              text="Tu môže pokračovať ďalší obsah kroniky."
-              delay={1.2}
-              className="nice-paragraph"
-          />
-      </div>
-  );
+    return (
+        <div className="strana-cely-obrazok-wrap">
+            <ZoomObrazok
+                src={strana07Obrazok}
+                alt="Strana 07"
+                loading="eager"
+                decoding="async"
+                className="strana-cely-obrazok strana-lava"
+            />
+        </div>
+    );
 }

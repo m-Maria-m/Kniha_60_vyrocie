@@ -29,7 +29,7 @@ import strana04Obrazok from "../assets/strana04.png";
 import strana05Obrazok from "../assets/strana05.png";
 
 import prazdnaStranaObrazok from "../assets/prazdna-strana.png";
-import strana12Obrazok from "../assets/strana12.png";
+import strana12Obrazok from "../assets/strana12_nahrada.png";
 import strana14Obrazok from "../assets/strana14.png";
 
 const TRVANIE_LISTOVANIA = 1400;

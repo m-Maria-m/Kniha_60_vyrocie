@@ -1,13 +1,13 @@
 
 import ZoomObrazok from "../komponenty/ZoomObrazok.jsx";
-import stranaPrazdnaObrazok from "../assets/prazdna-strana.png";
+import strana08Obrazok from "../assets/strana08.png";
 
 export default function Strana08() {
     return (
         <div className="strana-cely-obrazok-wrap">
             <ZoomObrazok
-                src={stranaPrazdnaObrazok}
-                alt="Strana 08-docastna"
+                src={strana08Obrazok}
+                alt="Strana 08"
                 loading="eager"
                 decoding="async"
                 className="strana-cely-obrazok strana-prava"
