@@ -1,418 +1,170 @@
-# Kniha 60. výročie
+# Kniha – 60. výročie
 
-Interaktívna digitálna kniha / kronika k 60. výročiu školy. Projekt je vytvorený v Reacte cez Vite a nasadený cez Vercel.
+Interaktívna digitálna kniha vytvorená vo frameworku React + Vite.
 
-Živá verzia projektu: https://kniha-60-virocie.vercel.app/
+Projekt simuluje realistické listovanie knihy s podporou:
+- otáčania strán,
+- zoomovania obrázkov,
+- responzívneho zobrazenia,
+- fullscreen režimu,
+- optimalizácie pre desktop aj mobil.
 
 ---
 
-## Aktuálny stav projektu
+# Použité technológie
 
-Projekt obsahuje digitálnu knihu s otváraním obalu, listovaním strán, zoomovaním obrázkov a responzívnym zobrazením pre desktop aj mobil.
+- React
+- Vite
+- react-pageflip
+- CSS3
+- JavaScript (ES6)
 
-Hlavné časti projektu:
+---
 
-```txt
+# Štruktúra projektu
+
+```bash
 src/
-  komponenty/
-    Kniha.jsx          hlavná logika otvorenia a listovania knihy
-    OtocnaStrana.jsx   jeden otočný list knihy
-    Ovladanie.jsx      tlačidlá dopredu, späť a prehratie znova
-    Titulka.jsx        obal knihy
-    ZoomObrazok.jsx    kliknutie na obrázok a zväčšený náhľad
-    PadajuciText.jsx   animovaný text
-  strany/
-    Strana01.jsx
-    Strana02.jsx
-    ...
-    Strana14.jsx
-  assets/
-    titulok.png
-    5ZS_logo.png
-    strana01.png
-    strana02.png
-    ...
-    prazdna-strana.png
-  styles/
-    book.css
-    pages.css
-    controls.css
-    animations.css
+│
+├── komponenty/
+│   ├── Kniha.jsx
+│   ├── TlacidlaListovania.jsx
+│   ├── ZoomObrazok.jsx
+│   └── ZoomovatelnaStrana.jsx
+│
+├── strany/
+│   ├── Strana01.jsx
+│   ├── Strana02.jsx
+│   ├── ...
+│   └── Strana14.jsx
+│
+├── assets/
+│   └── obrazky/
+│
+└── App.jsx
 ```
 
 ---
 
-## Spustenie projektu lokálne
+# Stav projektu
 
-Nainštalovanie balíkov:
+Projekt je aktívne vo vývoji.
+
+Aktuálne:
+- hlavná funkcionalita listovania funguje,
+- zoom obrázkov je implementovaný,
+- responzívne správanie je pripravené,
+- strany 01–10 sú zapojené do listovania knihy.
+
+---
+
+# Rozpracované strany
+
+Strany 11–14 sú momentálne pripravené ako rozpracované stránky.
+
+Do týchto strán budú postupne dopĺňané:
+- fotografie,
+- obsah,
+- finálne rozloženie,
+- textové úpravy.
+
+Preto ešte nemusia byť kompletne zapojené do finálneho listovania knihy.
+
+---
+
+# Komponenty
+
+## Kniha.jsx
+
+Hlavný komponent knihy.
+
+Zabezpečuje:
+- render strán,
+- logiku listovania,
+- fullscreen režim,
+- ovládanie knihy,
+- správu animácií.
+
+---
+
+## TlacidlaListovania.jsx
+
+Obsahuje:
+- tlačidlá ďalšia/predchádzajúca strana,
+- navigáciu knihy,
+- pomocné ovládacie prvky.
+
+---
+
+## ZoomObrazok.jsx
+
+Používaný komponent na:
+- zoom fotografií,
+- otváranie obrázkov,
+- responzívne zobrazenie detailov.
+
+---
+
+## ZoomovatelnaStrana.jsx
+
+Rezervný komponent ponechaný pre budúce rozšírenia projektu.
+
+Momentálne sa aktívne nepoužíva, pretože aktuálne stránky používajú komponent `ZoomObrazok.jsx`.
+
+---
+
+# Funkcionality
+
+- realistické otáčanie strán,
+- dvojstranové zobrazenie knihy,
+- fullscreen režim,
+- responzívny dizajn,
+- zoom obrázkov,
+- podpora desktop aj mobil zariadení,
+- animácie listovania.
+
+---
+
+# Spustenie projektu
+
+Inštalácia závislostí:
 
 ```bash
 npm install
 ```
 
-Spustenie lokálneho vývoja:
+Spustenie vývojového servera:
 
 ```bash
 npm run dev
 ```
 
-Kontrola produkčného buildu:
+Build produkcie:
 
 ```bash
 npm run build
 ```
 
-Náhľad buildu lokálne:
+Preview produkčnej verzie:
 
 ```bash
 npm run preview
 ```
 
-Pred každým pushom na GitHub je vhodné spustiť:
+---
 
-```bash
-npm run build
-git status
-```
+# Budúce úpravy
 
-Ak build prejde a pracovný strom je čistý, projekt je pripravený na nasadenie cez Vercel.
+Plánované rozšírenia:
+- doplnenie strán 11–14,
+- optimalizácia animácií,
+- jemnejšie prechody strán,
+- doplnenie ďalších galérií,
+- vylepšenie mobilného zobrazenia,
+- optimalizácia výkonu.
 
 ---
 
-## Nasadenie na GitHub a Vercel
+# Autor projektu
 
-Bežný postup pri nahrávaní zmien:
-
-```bash
-git status
-git add .
-git commit -m "Popis zmeny"
-git push origin main
-```
-
-Po pushnutí do vetvy `main` sa Vercel deployment spustí automaticky, pokiaľ je projekt pripojený na GitHub repozitár.
-
-Vo Verceli treba sledovať:
-
-```txt
-Project → Deployments → posledný deployment → Ready
-```
-
-Ak deployment skončí stavom `Ready`, zmeny sú nasadené na verejnej stránke.
-
----
-
-## Logika listovania
-
-Kniha je zložená z pevnej pravej strany a otočných listov. Každý otočný list má prednú a zadnú stranu.
-
-Aktuálne mapovanie listov:
-
-| List | Predná strana listu | Zadná strana listu | Pravá pevná strana po otočení |
-|---:|---|---|---|
-| 1 | `Strana01` | `Strana01 typ="lava"` | `Strana02` |
-| 2 | `Strana02` | `Strana03` | `Strana04` |
-| 3 | `Strana04` | `Strana05` | `Strana06` |
-| 4 | `Strana06` | `Strana07` | `Strana08` |
-| 5 | `Strana08` | `Strana09` | `Strana10` |
-| 6 | `Strana10` | `Strana11` | `Strana12` |
-| 7 | `Strana12` | `Strana13` | `Strana14` |
-
-Dôležité: ak sa pridáva ďalší list, treba pridať dve nové strany otočného listu a jednu pravú pevnú stranu pre nasledujúcu dvojstranu podľa existujúceho vzoru.
-
----
-
-## Dočasné a hotové stránky
-
-Niektoré strany používajú dočasný podklad:
-
-```txt
-src/assets/prazdna-strana.png
-```
-
-Tento obrázok slúži ako jednotný placeholder, aby mala kniha pri listovaní rovnaký vizuálny štýl aj tam, kde ešte nie sú pripravené finálne podklady.
-
-Pravidlo:
-
-```txt
-Ak je stránka dočasná, importuje prazdna-strana.png.
-Ak je stránka hotová, importuje vlastný obrázok stranaXX.png.
-```
-
-Príklad dočasnej stránky:
-
-```jsx
-import ZoomObrazok from "../komponenty/ZoomObrazok.jsx";
-import stranaPrazdnaObrazok from "../assets/prazdna-strana.png";
-
-export default function Strana13() {
-  return (
-    <div className="strana-cely-obrazok-wrap">
-      <ZoomObrazok
-        src={stranaPrazdnaObrazok}
-        alt="Strana 13 dočasná"
-        className="strana-cely-obrazok strana-lava"
-      />
-    </div>
-  );
-}
-```
-
-Príklad hotovej stránky:
-
-```jsx
-import ZoomObrazok from "../komponenty/ZoomObrazok.jsx";
-import strana14Obrazok from "../assets/strana14.png";
-
-export default function Strana14() {
-  return (
-    <div className="strana-cely-obrazok-wrap">
-      <ZoomObrazok
-        src={strana14Obrazok}
-        alt="Strana 14"
-        className="strana-cely-obrazok strana-prava"
-      />
-    </div>
-  );
-}
-```
-
----
-
-## Pravidlá pre obrázky strán
-
-Aby sa stránky pri listovaní nezmenšovali a neskákali, všetky obrázkové stránky majú používať rovnakú štruktúru:
-
-```jsx
-<div className="strana-cely-obrazok-wrap">
-  <ZoomObrazok
-    src={obrazok}
-    alt="Strana XX"
-    className="strana-cely-obrazok strana-lava"
-  />
-</div>
-```
-
-alebo pre pravú stranu:
-
-```jsx
-<div className="strana-cely-obrazok-wrap">
-  <ZoomObrazok
-    src={obrazok}
-    alt="Strana XX"
-    className="strana-cely-obrazok strana-prava"
-  />
-</div>
-```
-
-Nepoužívať nový obal:
-
-```jsx
-<div className="book-page left-page">
-```
-
-alebo:
-
-```jsx
-<div className="book-page right-page">
-```
-
-priamo v súboroch `StranaXX.jsx`, ak stránka používa celostránkový obrázok. Tento obal už rieši hlavná kniha a pri vložení navyše môže zmeniť veľkosť obrázka.
-
----
-
-## Známy problém: preblikávanie obrázkov na mobile
-
-Na mobile sa môže stať, že pri listovaní obrázok krátko preblikne alebo sa zobrazí oneskorene. Najviditeľnejšie to môže byť pri neskorších listoch, napríklad okolo `Strana13`.
-
-Pravdepodobné príčiny:
-
-1. Niektoré stránky sa vkladajú do DOM-u až počas listovania.
-2. Pri listovaní späť sa niektoré dvojstrany po animácii odoberajú.
-3. Mobilný prehliadač niekedy dekóduje veľký PNG obrázok až v momente animácie.
-4. Ak sa neuvážene prepíšu `transform` pravidlá pre `.face-front` a `.face-back`, môže sa narušiť 3D vrstvenie listov.
-
----
-
-## Dôležité pravidlo pre CSS
-
-V `book.css` už existujú základné pravidlá pre 3D listovanie:
-
-```css
-.flipping-page.turned {
-  transform: rotateY(-180deg);
-}
-
-.flipping-page .face-front {
-  transform: rotateY(0deg);
-}
-
-.flipping-page .face-back {
-  transform: rotateY(180deg);
-}
-```
-
-Preto sa nemá bez testovania pridávať nový CSS blok, ktorý opäť prepíše:
-
-```css
-.flipping-page .face-front
-.flipping-page .face-back
-.strana-cely-obrazok
-```
-
-Ak sa tieto pravidlá prepíšu, môže sa zhoršiť preblikávanie, hlavne pri posledných listoch.
-
-Bezpečnejšie CSS pre spätné listovanie je iba:
-
-```css
-.flipping-page.turning-back {
-  z-index: 130 !important;
-}
-
-.flipping-page {
-  will-change: transform;
-}
-
-.flipping-page .face {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-```
-
-Tento blok nemení veľkosť obrázkov a neprepisuje pôvodné otočenie prednej ani zadnej strany listu.
-
----
-
-## Odporúčané riešenie pre stabilizáciu mobilného listovania
-
-Najbezpečnejší smer opravy nie je meniť rozmery obrázkov ani pridávať veľa CSS transformácií.
-
-Odporúčané poradie opravy:
-
-1. Prednačítať obrázky knihy hneď po načítaní aplikácie.
-2. V `ZoomObrazok.jsx` nastaviť hlavným obrázkom:
-   ```jsx
-   loading="eager"
-   decoding="async"
-   fetchPriority="high"
-   ```
-3. Predné strany otočných listov renderovať stále, nie až podmienkou počas kliknutia.
-4. Pri listovaní späť držať vracajúci sa list dočasne nad ostatnými cez triedu `turning-back`.
-5. Až potom testovať ďalšie CSS zásahy.
-
----
-
-## Ako pridať novú stránku
-
-1. Pridať obrázok do:
-
-```txt
-src/assets/
-```
-
-Napríklad:
-
-```txt
-strana15.png
-```
-
-2. Vytvoriť nový komponent v:
-
-```txt
-src/strany/
-```
-
-Napríklad:
-
-```txt
-Strana15.jsx
-```
-
-3. Použiť rovnakú štruktúru:
-
-```jsx
-import ZoomObrazok from "../komponenty/ZoomObrazok.jsx";
-import strana15Obrazok from "../assets/strana15.png";
-
-export default function Strana15() {
-  return (
-    <div className="strana-cely-obrazok-wrap">
-      <ZoomObrazok
-        src={strana15Obrazok}
-        alt="Strana 15"
-        className="strana-cely-obrazok strana-lava"
-      />
-    </div>
-  );
-}
-```
-
-4. Doplniť import a logiku listovania v `Kniha.jsx`.
-
-5. Ak ide o nový otočný list, doplniť aj z-index triedu v `pages.css`.
-
----
-
-## Kontrola pred nasadením
-
-Pred pushom:
-
-```bash
-npm run build
-git status
-```
-
-Potom:
-
-```bash
-git add .
-git commit -m "Upravene strany knihy"
-git push origin main
-```
-
-Po deployi vo Verceli otestovať:
-
-```txt
-Desktop:
-- otvorenie knihy
-- listovanie dopredu
-- listovanie späť
-- zoom obrázkov
-
-Mobil:
-- otvorenie knihy
-- prvá strana po otvorení
-- listovanie dopredu po posledný list
-- listovanie späť
-- Strana13 a posledné listy
-- zoom obrázkov dotykom
-```
-
----
-
-## Poznámky k názvom súborov
-
-Názvy komponentov strán majú byť s veľkým písmenom:
-
-```txt
-Strana11.jsx
-Strana12.jsx
-Strana13.jsx
-Strana14.jsx
-```
-
-Nepoužívať malé názvy:
-
-```txt
-strana12.jsx
-strana13.jsx
-strana14.jsx
-```
-
-Mac ich môže tolerovať, ale Vercel/Linux rozlišuje veľké a malé písmená.
-
----
-
-## Súhrn
-
-Projekt je funkčná interaktívna kniha s listovaním a zoomom. Pri ďalších úpravách je dôležité zachovať rovnakú štruktúru strán, nemeniť zbytočne obaly obrázkov a pri riešení mobilného preblikávania najprv stabilizovať načítanie obrázkov a vrstvenie listov, až potom meniť CSS transformácie.
+Projekt vytvorený pre digitálnu spomienkovú knihu k 60. výročiu.
